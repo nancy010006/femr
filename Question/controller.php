@@ -45,6 +45,8 @@ function makeReturnMessage($messageCode){
     array_unshift($table,array('status' => $messageCode));
     if($messageCode==422)
         array_push($table, array('reason'=>"SQL錯誤"));
+    else if($messageCode==423)
+        array_push($table, array('reason'=>"沒有這個病歷 請重新確認病歷號碼"));
     return json_encode($table, JSON_UNESCAPED_UNICODE,JSON_FORCE_OBJECT);
 }
 function makeErrorReturnMessage(){
@@ -57,6 +59,11 @@ switch($act) {
                 $table=array();
                 $alldata = @$data[1];
                 echo (makeReturnMessage(addQuestion($alldata)));
+                break;
+        case "addSleepQuestion":
+                $table=array();
+                $alldata = @$data[1];
+                echo (makeReturnMessage(addSleepQuestion($alldata)));
                 break;
         case "updateQuestion":
                 $table=array();

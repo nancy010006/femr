@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    // part1
     var originDatas = [
         {
             part : "part1",
@@ -68,10 +67,18 @@ $(document).ready(function() {
     $.each(originDatas,function(index,originData) {
         makeQuestionTips(originData.part);
         $.each(originData.questions,function(index, question) {
-            // input name 為part1-0 part2-1 之類
-            var input_name = originData.part+'-'+index;
+            // input name 為p1001 p2015 之類 對應題目寫在資料庫註解
+            var input_name = 'p'+(parseInt(originData.part.substr(4,1)*1000)+parseInt(index+1));
             makeQuestionDiv(question.desc,originData.part,input_name);
         });
+    });
+    $('input').prop('checked',true);
+    $('input').val('1');
+    $('#form').submit(function(event) {
+        event.preventDefault();
+        var chk = confirm('確定要送出?');
+        if(chk)
+            sendData();
     });
 });
 
@@ -87,4 +94,47 @@ function makeQuestionTips(where){
     $("#"+where+"").append(question_tips_part1);
     $("#"+where+"").append(question_tips_part2);
     $("#"+where+"").append(question_tips_part3);
+}
+function sendData(){
+    var serializeform = $('#form').serializeArray();
+    data = objectifyForm(serializeform,'addSleepQuestion');
+    console.log(data);
+    data[1].midcase_id = $('#question_no').val();
+    $.ajax({
+        url:'../../Question/controller.php',
+        type: 'POST',
+        data:JSON.stringify(data),
+        async:false,
+        success:function(r){
+                result=eval(r);
+                console.log(result);
+                if(result[0].status==200){
+                    $('body').html('新增成功 感謝您的填寫');
+                }else if(result[0].status==423){
+                    alert(result[1].reason);
+                }else{
+                    alert("發生未預期的錯誤 請聯絡管理員");
+                }
+        },
+        error:function(err){
+                alert("發生未預期的錯誤 請聯絡管理員");
+                console.log(err);
+        }
+    });
+}
+function objectifyForm(formArray,actvalue) {//serialize data function
+        var returnArray=[];
+        var actObject = {};
+        actObject.act=actvalue;
+        var formObject = {};
+        for (var i = 0; i < formArray.length; i++){
+                if(formArray[i]['name']!=tmp)
+                    formObject[formArray[i]['name']] = formArray[i]['value'];
+                else
+                    formObject[formArray[i]['name']] += "，"+formArray[i]['value'];
+                var tmp =formArray[i]['name'];
+        }
+        returnArray.push(actObject);
+        returnArray.push(formObject);
+        return returnArray;
 }
