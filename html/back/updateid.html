@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" NAME="ROBOTS" CONTENT="NOARCHIVE"/>
+<META HTTP-EQUIV="EXPIRES" CONTENT="0">
+<title>修改病歷號碼頁面</title>
+<link href="http://cdnjs.cloudflare.com/ajax/libs/alertify.js/0.3.10/alertify.core.css" rel="stylesheet">  
+<link href="http://cdnjs.cloudflare.com/ajax/libs/alertify.js/0.3.10/alertify.default.css" rel="stylesheet">  
+<script src="http://cdnjs.cloudflare.com/ajax/libs/alertify.js/0.3.10/alertify.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="../../js/updateid.js"></script>
+</head>
+<style type="text/css">
+	#form{
+		background-color: lightblue;
+	}
+	#form2{
+		background-color: #FAEBD7;
+	}
+	textarea{
+		height: 100px;
+		width: 500px;
+	}
+</style>
+<body>
+	<button class="index">首頁</button>
+	<form id="form">
+		<h1>修改病歷號碼</h1>
+		
+		<p>
+			原始病歷號碼:
+			<input type="text" name="oldid" /required>
+			新病歷號碼:
+			<input type="text" name="newid" /required>
+		</p>
+		<button type="submit">修改</button>
+	</form>
+</body>
+</html>

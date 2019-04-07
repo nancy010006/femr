@@ -1,0 +1,7 @@
+
+# HTID:7405685: DO NOT REMOVE OR MODIFY THIS LINE AND THE LINES BELOW
+AuthType Basic
+AuthName "Restricted Access"
+AuthUserFile "/storage/ssd5/759/7720759/public_html/Ptt_online/html/back/.htpasswd"
+Require user admin
+# DO NOT REMOVE OR MODIFY THIS LINE AND THE LINES ABOVE HTID:7405685:

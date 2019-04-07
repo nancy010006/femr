@@ -1,0 +1,4 @@
+AuthName "PrivatePage"
+AuthType Basic
+AuthUserFile "/html/back/.htpasswd"
+require valid-user

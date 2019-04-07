@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" NAME="ROBOTS" CONTENT="NOARCHIVE"/>
+<META HTTP-EQUIV="EXPIRES" CONTENT="0">
+<title>問卷頁面</title>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="../../js/question.js"></script>
+<style type="text/css">
+input[type=checkbox]{
+	height: 30px;
+	width: 30px;
+}
+input[type=radio]{
+	height: 30px;
+	width: 30px;
+}
+input[type=text]{
+	font-size: 30px;
+}
+input[type=number]{
+	font-size: 30px;
+}
+select{
+	font-size: 30px;
+}
+option{
+	font-size: 30px;
+}
+span{
+	font-size: 30px;
+}
+p{
+	font-size: 30px;
+}
+h2{
+	font-size: 45px;
+}
+h4{
+	font-size: 35px;
+}
+h5{
+	font-size: 30px;
+}
+.chpart{
+	width: 100px;
+	height: 60px;
+}
+#ready{
+	font-size: 25px;
+}
+button{
+	height: 50px;
+	width: 200px;
+}
+/*#chpartarea{
+  position: fixed;
+  bottom: 85%;
+  left: 50%;
+  background-color: white;
+}*/
+</style>
+</head>
+<body>
+	<DIV ID="test"></DIV>
+	<div id="hospital_user">
+		<form><p>請輸入病歷號碼<input type="text" id="caseid"><button id="makecaseid" style="width:50px; height: 25px;">確認</button></p></form>
+	</div>
+	<div id="hospital_user2" style="display:none">
+		<form><p>請輸入病歷號碼<input type="text" id="caseid2"><button id="makecaseid2" style="width:50px; height: 25px;">確認</button></p></form>
+	</div>
+	<button id="reset" style="display:none">重新輸入病歷號碼</button><h1 id="showid"></h1>
+	<form id="form1" style="display: none">
+	<!-- <form id="form"> -->
+		<!-- <h1>____________________以下由家長填寫____________________</h1> -->
+		<div id="part1">
+			<h2>二、自小養育狀況</h2>
+			<p>
+				目前身高:<input type="text" name="height">公分
+			</p>
+			<p>
+				體重:<input type="text" name="weight">公斤
+			</p>
+			<p>
+				頭圍:<input type="text" name="head_circumference">公分
+			</p>
+			<p>
+				 目前主要照顧者
+				<select name="caregiver" onchange="checkfamily(this)">
+					<option name="" value=""></option>
+					<option name="爸爸" value="爸爸">爸爸</option>
+					<option name="媽媽" value="媽媽">媽媽</option>
+					<option name="爺爺" value="爺爺">爺爺</option>
+					<option name="奶奶" value="奶奶">奶奶</option>
+					<option name="外公" value="外公">外公</option>
+					<option name="外婆" value="外婆">外婆</option>
+					<option name="保母" value="保母">保母</option>
+					<option name="寄養媽媽" value="寄養媽媽">寄養媽媽</option>
+					<option name="其他" value="其他">其他</option>
+				</select>
+			</p>
+			<h2 name="history">三、就學歷史</h2>
+			<p><input id="historycheck2" type="radio" name="history" value="無">無</p>
+			<p>
+				<input id="historycheck" type="radio" name="history" value="有">有
+				<span id="history"></span>
+				<span id="history2"></span>
+			</p>
+			<h2>四、家長主要在意問題:(必選，可複選)</h2>
+			<h4 name="question_language">A.語言</h4>
+			<input onclick="clickNo(this)" type="checkbox" name="question_language" onclick="clickNo(this)" value="無"><span>無(跳下題)</span>
+			<input type="checkbox" name="question_language" value="說話慢、表達差"><span>說話慢、表達差</span>
+			<input type="checkbox" name="question_language" value="發音不清楚"><span>發音不清楚</span>
+			<input type="checkbox" name="question_language" value="答非所問、不會對答"><span>答非所問、不會對答</span>
+			<input type="checkbox" name="question_language" value="口吃"><span>口吃</span>
+			<input type="checkbox" name="question_language" value="流口水"><span>流口水</span>
+			<input type="checkbox" name="question_language" value="吃東西會嗆咳"><span>吃東西會嗆咳</span>
+
+			<h4 name="question_action">B.動作</h4>
+			<input type="checkbox" name="question_action" onclick="clickNo(this)" value="無"><span>無(跳下題) </span>
+			<input type="checkbox" name="question_action" value="大動作發展慢"><span>大動作發展慢(如常跌倒)</span>
+			<input type="checkbox" name="question_action" value="動作不靈活、平衡問題"><span>動作不靈活、平衡問題</span>
+			<input type="checkbox" name="question_action" value="動作慢吞吞"><span>動作慢吞吞(如跑步偏慢)</span>
+			<input type="checkbox" name="question_action" value="走路姿勢異常"><span>走路姿勢異常</span>
+			<input type="checkbox" name="question_action" value="局部肢體問題"><span>局部肢體問題(如扁平足)</span>
+			<input type="checkbox" name="question_action" value="手部動作發展慢"><span>手部動作發展慢</span>
+
+			<h4 name="question_learn">C.學習</h4>
+			<input type="checkbox" name="question_learn" onclick="clickNo(this)" value="無"><span>無(跳下題) </span>
+			<input type="checkbox" name="question_learn" value="學習慢"><span>學習慢</span>
+			<input type="checkbox" name="question_learn" value="學習動機低落"><span>學習動機低落</span>
+			<input type="checkbox" name="question_learn" value="不喜歡上學"><span>不喜歡上學</span>
+			<input type="checkbox" name="question_learn" value="學校管教問題"><span>學校管教問題</span>
+
+			<h4 name="question_relationship">D.人際</h4>
+			<input type="checkbox" name="question_relationship" onclick="clickNo(this)" value="無"><span>無(跳下題) </span>
+			<input type="checkbox" name="question_relationship" value="不太理熟悉的人"><span>不太理熟悉的人</span>
+			<input type="checkbox" name="question_relationship" value="怕陌生人"><span>怕陌生人</span>
+			<input type="checkbox" name="question_relationship" value="手足關係問題"><span>手足關係問題</span>
+			<input type="checkbox" name="question_relationship" value="不易和同儕建立關係"><span>不易和同儕建立關係</span>
+			<input type="checkbox" name="question_relationship" value="易和同儕起衝突"><span>易和同儕起衝突</span>
+			<input type="checkbox" name="question_relationship" value="不守團體規則"><span>不守團體規則</span>
+			<input type="checkbox" name="question_relationship" value="有攻擊性行為"><span>有攻擊性行為(如打人、咬人)</span>
+
+			<h4 name="question_mood">E.情緒</h4>
+			<input type="checkbox" name="question_mood" onclick="clickNo(this)" value="無"><span>無(跳下題) </span>
+			<input type="checkbox" name="question_mood" value="情緒起伏大"><span>情緒起伏大</span>
+			<input type="checkbox" name="question_mood" value="易恐懼"><span>易恐懼</span>
+			<input type="checkbox" name="question_mood" value="易焦慮"><span>易焦慮</span>
+			<input type="checkbox" name="question_mood" value="易怒"><span>易怒</span>
+			<input type="checkbox" name="question_mood" value="愛哭"><span>愛哭</span>
+			<input type="checkbox" name="question_mood" value="憂鬱"><span>憂鬱</span>
+
+			<h4 name="question_attention">F.活動與注意力</h4>
+			<input type="checkbox" name="question_attention" onclick="clickNo(this)" value="無"><span>無(跳下題) </span>
+			<input type="checkbox" name="question_attention" value="好動"><span>好動</span>
+			<input type="checkbox" name="question_attention" value="易分心"><span>易分心</span>
+
+			<h4 name="question_perception">G.感官知覺</h4>
+			<input type="checkbox" name="question_perception" onclick="clickNo(this)" value="無"><span>無(跳下題) </span>
+			<input type="checkbox" name="question_perception" value="聽力問題"><span>聽力問題</span>
+			<input id="eyecheck" type="checkbox" name="question_perception" value="視力問題"><span>視力問題</span>
+			<span id="eye"></span>
+			<!-- <select name="question_perception">
+				<option name="斜視" value="斜視">斜視</option>
+				<option name="斜視" value="斜視">斜視</option>
+				<option name="弱視" value="弱視">弱視</option>
+				<option name="遠視" value="遠視">遠視</option>
+				<option name="近視" value="近視">近視</option>
+			</select> -->
+			<input id="touchcheck" type="checkbox" name="question_perception" value="觸覺"><span>觸覺</span>
+			<span id="touch"></span>
+			<!-- <select name="question_perception">
+				<option name="缺乏反應" value="缺乏反應">缺乏反應</option>
+				<option name="過度排斥" value="過度排斥">過度排斥</option>
+			</select> -->
+
+			<h4 name="question_lifestyle">H.生活作息</h4>
+			<input type="checkbox" name="question_lifestyle" onclick="clickNo(this)" value="無"><span>無(跳下題) </span>
+			<input type="checkbox" name="question_lifestyle" value="大小便問題"><span>大小便問題</span>
+			<input type="checkbox" name="question_lifestyle" value="睡眠問題"><span>睡眠問題</span>
+			<input type="checkbox" name="question_lifestyle" value="飲食問題"><span>飲食問題</span>
+
+			<h4 name="question_strangestyle">I.怪異言行</h4>
+			<input type="checkbox" name="question_strangestyle" onclick="clickNo(this)" value="無"><span>無(跳下題) </span>
+			<input type="checkbox" name="question_strangestyle" value="有"><span>有</span>
+
+			<h4 name="question_selfmutilation">J.自傷行為</h4>
+			<input type="checkbox" name="question_selfmutilation" onclick="clickNo(this)" value="無"><span>無(跳下題) </span>
+			<input type="checkbox" name="question_selfmutilation" value="有"><span>有</span>
+
+			<h4 name="question_helpkid">K.不知如何教導或幫助小孩</h4>
+			<input type="checkbox" name="question_helpkid" onclick="clickNo(this)" value="否"><span>否(跳下題) </span>
+			<input type="checkbox" name="question_helpkid" value="是"><span>是</span>
+			<br>
+			<br>
+			<h2 name="target">五、就診目的:(複選)</h2>
+			<input type="checkbox" name="target" value="確定目前能力"><span>確定目前能力</span>
+			<input type="checkbox" name="target" value="確定診斷病因"><span>確定診斷病因</span>
+			<input type="checkbox" name="target" value="申請手冊"><span>申請手冊</span>
+			<input type="checkbox" name="target" value="入學前鑑定"><span>入學前鑑定</span>
+			<input type="checkbox" name="target" value="學校建議"><span>學校建議</span>
+		</div>
+		</form>
+		<form id="form2">			
+			<div id="part2" style="display: none">
+				<h2>六、家庭狀況:</h2>
+				<div id="family_status">
+					<h4 name="family_married">1.父母婚姻狀況:(單選)</h4>
+					<input type="radio" name="family_married" value="結婚同居"><span>結婚同居</span>
+					<input type="radio" name="family_married" value="結婚分居"><span>結婚分居</span>
+					<input type="radio" name="family_married" value="未婚同居"><span>未婚同居</span>
+					<input type="radio" name="family_married" value="未婚分居"><span>未婚分居</span>
+					<input type="radio" name="family_married" value="離婚"><span>離婚</span>
+					<input type="radio" name="family_married" value="喪偶"><span>喪偶</span>
+
+					<h4 name="family_brother">2.手足人數:</h4>
+						兄
+						<select name="family_brother">
+							<option value=""></option>
+							<option value="兄0人">0</option>
+							<option value="兄1人">1</option>
+							<option value="兄2人">2</option>
+							<option value="兄3人">3</option>
+							<option value="兄4人">4</option>
+							<option value="兄5人">5</option>
+						</select>
+						人、
+						弟
+						<select name="family_brother">
+							<option value=""></option>
+							<option value="弟0人">0</option>
+							<option value="弟1人">1</option>
+							<option value="弟2人">2</option>
+							<option value="弟3人">3</option>
+							<option value="弟4人">4</option>
+							<option value="弟5人">5</option>
+						</select>
+						人、
+						姐
+						<select name="family_brother">
+							<option value=""></option>
+							<option value="姐0人">0</option>
+							<option value="姐1人">1</option>
+							<option value="姐2人">2</option>
+							<option value="姐3人">3</option>
+							<option value="姐4人">4</option>
+							<option value="姐5人">5</option>
+						</select>
+						人、
+						妹
+						<select name="family_brother">
+							<option value=""></option>
+							<option value="妹0人">0</option>
+							<option value="妹1人">1</option>
+							<option value="妹2人">2</option>
+							<option value="妹3人">3</option>
+							<option value="妹4人">4</option>
+							<option value="妹5人">5</option>
+						</select>
+						人，排行第
+						<select name="family_brother">
+							<option value=""></option>
+							<option value="排行第1">1</option>
+							<option value="排行第2">2</option>
+							<option value="排行第3">3</option>
+							<option value="排行第4">4</option>
+							<option value="排行第5">5</option>
+						</select>
+					<h4 name="family">3.父親資料:</h4>
+					<h5 name="family_fname">姓名</h5>
+					<input type="text" name="family_fname">
+					<h5 name="family_fage">出生年月日</h5>
+					<input type="text" id="family_fage" placeholder="格式:20001231">
+					<!-- <input type="date" id="family_fage"> -->
+					<input type="hidden" name="family_fage" id="family_fage_input">
+					<h5 name="family_feducation">教育程度:(單選)</h5>
+					<input type="radio" name="family_feducation" value="小學"><span>小學</span>
+					<input type="radio" name="family_feducation" value="高中"><span>高中</span>
+					<input type="radio" name="family_feducation" value="大學"><span>大學</span>
+					<input type="radio" name="family_feducation" value="博士"><span>博士</span>
+					<input type="radio" name="family_feducation" value="初中"><span>初中</span>
+					<input type="radio" name="family_feducation" value="專科"><span>專科</span>
+					<input type="radio" name="family_feducation" value="碩士"><span>碩士</span>
+					<input type="radio" name="family_feducation" value="未受教育"><span>未受教育</span>
+					<h5 name="family_fcareer">職業:</h5>
+					<input id="family_fcareercheck" type="radio" name="family_fcareer" value="無" ><span>無</span>
+					<input id="family_fcareercheck2" type="radio" name="family_fcareer" value="有，職業別"><span>有，職業別</span><span id="family_fcareercontent"></span>
+					<span id="family_fcareer"></span>
+					<h5 name="family_fcountry">國籍:</h5>
+					<input id="family_fcountrycheck" type="radio" name="family_fcountry" value="本國籍" ><span>本國籍</span>
+					<input id="family_fcountrycheck2" type="radio" name="family_fcountry" value="外籍"><span>外籍</span><span id="family_fcountrycontent"></span>
+					<span id="family_fcountry"></span>
+					<h4 name="family">4.母親資料:</h4>
+					<h5 name="family_mname">姓名</h5>
+					<input type="text" name="family_mname">
+					<h5 name="family_mage">出生年月日</h5>
+					<input type="text" id="family_mage" placeholder="格式:20001231">
+					<!-- <input type="date" id="family_mage"> -->
+					<input type="hidden" name="family_mage" id="family_mage_input">
+					<h5 name="family_meducation">教育程度:(單選)</h5>
+					<input type="radio" name="family_meducation" value="小學"><span>小學</span>
+					<input type="radio" name="family_meducation" value="高中"><span>高中</span>
+					<input type="radio" name="family_meducation" value="大學"><span>大學</span>
+					<input type="radio" name="family_meducation" value="博士"><span>博士</span>
+					<input type="radio" name="family_meducation" value="初中"><span>初中</span>
+					<input type="radio" name="family_meducation" value="專科"><span>專科</span>
+					<input type="radio" name="family_meducation" value="碩士"><span>碩士</span>
+					<input type="radio" name="family_meducation" value="未受教育"><span>未受教育</span>
+					<h5 name="family_mcareer">職業:</h5>
+					<input id="family_mcareercheck" type="radio" name="family_mcareer" value="無" ><span>無</span>
+					<input id="family_mcareercheck2" type="radio" name="family_mcareer" value="有，職業別"><span>有，職業別</span><span id="family_mcareercontent"></span>
+					<span id="family_mcareer"></span>
+					<h5 name="family_mcountry">國籍:</h5>
+					<input id="family_mcountrycheck" type="radio" name="family_mcountry" value="本國籍" ><span>本國籍</span>
+					<input id="family_mcountrycheck2" type="radio" name="family_mcountry" value="外籍"><span>外籍</span><span id="family_mcountrycontent"></span>
+					<span id="family_mcountry"></span>
+				</div>
+				<h4 name="family_family">5.目前居住家庭型態:</h4>
+				<input type="radio" name="family_family" value="小家庭"><span>小家庭</span>
+				<input type="radio" name="family_family" value="單親家庭"><span>單親家庭</span>
+				<input type="radio" name="family_family" value="寄養家庭"><span>寄養家庭</span>
+				<input type="radio" name="family_family" value="大家庭"><span>大家庭(三代同堂或與其他親戚同住)</span>
+			</div>
+		</form>
+		<form id="form3">			
+			<div id="part3" style="display: none">
+				<h2>七、療育情形:</h2>
+				<h4 name="treat_status">1.療育現況:</h4>
+				<input class="ifpart3" id="nopart3" type="radio" name="treat_status" value="未曾療育過"><span>未曾療育過(跳下頁)</span>
+				<input class="ifpart3" type="radio" name="treat_status" value="療育過但中斷"><span>療育過但中斷</span>
+				<input class="ifpart3" type="radio" name="treat_status" value="療育持續中"><span>療育持續中</span>
+
+				<h4 name="treat_type">2.曾接受的療育(上課)種類:(可複選)</h4>
+				<input type="checkbox" name="treat_type" value="物理治療"><span>物理治療</span>
+				<input type="checkbox" name="treat_type" value="職能治療"><span>職能治療</span>
+				<input type="checkbox" name="treat_type" value="語言治療"><span>語言治療</span>
+				<input type="checkbox" name="treat_type" value="認知訓練"><span>認知訓練</span>
+				<input type="checkbox" name="treat_type" value="機構早療課程"><span>機構早療課程</span>
+
+				<h4 name="treat_location">3.療育(上課)地點:</h4>
+				<input type="checkbox" name="treat_location" value="亞東醫院"><span>亞東醫院</span>
+				<input onclick="special(this)" type="checkbox" name="treat_location" value="其他醫院"><span>其他醫院</span><span id="treat_locationcontent_special1"></span>
+				<input onclick="special2(this)" type="checkbox" name="treat_location" value="復健診所"><span>復健診所</span><span id="treat_locationcontent_special2"></span>
+				<input type="checkbox" name="treat_location" value="日托班"><span>日托班</span>
+				<input type="checkbox" name="treat_location" value="到宅服務"><span>到宅服務</span>
+				<input id="treat_locationcheck" type="checkbox" name="treat_location" value="其他"><span>其他</span><span id="treat_locationcontent"></span>
+				
+				<h4 name="treat_hz">4.目前的療育(上課)頻率:</h4>
+				<input onclick="clickNo(this)" type="checkbox" name="treat_hz" value="無"><span>無</span>
+				<input id="treat_hzcheck1" type="checkbox" name="treat_hz" value="物理治療每週"><span>物理治療每週</span><span id="treat_hz1"></span><br>
+				<input id="treat_hzcheck2" type="checkbox" name="treat_hz" value="職能治療每週"><span>職能治療每週</span><span id="treat_hz2"></span><br>
+				<input id="treat_hzcheck3" type="checkbox" name="treat_hz" value="語言治療每週"><span>語言治療每週</span><span id="treat_hz3"></span><br>
+				<input id="treat_hzcheck4" type="checkbox" name="treat_hz" value="認知訓練每週"><span>認知訓練每週</span><span id="treat_hz4"></span><br>
+				<div id="part3additional"></div>
+			</div>
+		</form>
+		<form id="form4">			
+			<div id="part4" style="display: none">
+				<h2>八、發展及疾病史:</h2>
+				<h4 name="history_family">1.家族史:</h4>
+				<input onclick="clickNo(this)" type="checkbox" name="history_family" value="無"><span>無(跳下題)</span>
+				<input id="history_familycheck" type="checkbox" name="history_family" value="有"><span>有(請詳述身分及診斷)</span><span id="history_familycontent"></span>
+				<input type="checkbox" name="history_family" value="智能障礙"><span>智能障礙</span>
+				<input type="checkbox" name="history_family" value="自閉症"><span>自閉症</span>
+				<input type="checkbox" name="history_family" value="過動症"><span>過動症</span>
+				<br>
+				<input id="earcheck" type="checkbox" name="history_family" value="聽障"><span>聽障</span>
+				<span id="ear"></span>
+				<input type="checkbox" name="history_family" value="構音異常"><span>構音異常</span>
+				<input type="checkbox" name="history_family" value="口吃"><span>口吃</span>
+				<br>
+				<input id="mentalcheck" type="checkbox" name="history_family" value="精神病"><span>精神病</span>
+				<span id="mental"></span>
+				<br>
+				<input id="dnacheck" type="checkbox" name="history_family" value="染色體異常"><span>染色體異常</span>
+				<span id="dna"></span>
+				<div id="preg">
+					<h4>2.母親懷孕狀況:</h4>
+					<h5 name="history_nutrition">營養狀況:</h5>
+					<input type="radio" name="history_nutrition" value="佳"><span>佳</span>
+					<input type="radio" name="history_nutrition" value="可"><span>可</span>
+					<input type="radio" name="history_nutrition" value="不佳"><span>不佳</span>
+					<input type="radio" name="history_nutrition" value="很差"><span>很差</span>
+					<h5 name="history_disease">生理疾病:</h5>
+					<input onclick="clickNo(this)" type="checkbox" name="history_disease" value="無"><span>無</span>
+					<input type="checkbox" name="history_disease" value="感染"><span>感染</span>
+					<input type="checkbox" name="history_disease" value="高血壓"><span>高血壓</span>
+					<input type="checkbox" name="history_disease" value="水腫"><span>水腫</span>
+					<input type="checkbox" name="history_disease" value="蛋白尿"><span>蛋白尿</span>
+					<input type="checkbox" name="history_disease" value="癲癇"><span>癲癇</span>
+					<input type="checkbox" name="history_disease" value="子癇症"><span>子癇症</span>
+					<input type="checkbox" name="history_disease" value="內分泌疾病"><span>內分泌疾病</span>
+					<input id="history_diseasecheck" type="checkbox" name="history_disease" value="其他"><span>其他</span><span id="history_diseasecontent"></span>
+					<h5 name="history_medication">母親孕期用藥狀況:</h5>
+					<input id="history_medicationcheck" type="radio" name="history_medication" value="無"><span>無</span>
+					<input id="history_medicationcheck2" type="radio" name="history_medication" value="有"><span>有</span><span id="history_medicationcontent"></span>
+					<h5 name="history_abuse">母親物質濫用狀況:</h5>
+					<input id="history_abusecheck" type="radio" name="history_abuse" value="無"><span>無</span>
+					<input id="history_abusecheck2" type="radio" name="history_abuse" value="有"><span>有</span><span id="history_abusecontent"></span>
+					<h5 name="history_pregcount">孕次:</h5>
+					<select name="history_pregcount">
+						<option value=""></option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+					</select>
+					<h5 name="history_birthcount">生次:</h5>
+					<select name="history_birthcount">
+						<option value=""></option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+					</select>
+					<h5 name="history_abortion">流產:</h5>
+					<input type="radio" name="history_abortion" value="無"><span>無</span>
+					<input type="radio" name="history_abortion" value="自然流產"><span>自然流產</span>
+					<input type="radio" name="history_abortion" value="人工流產"><span>人工流產</span>
+					<input type="radio" name="history_abortion" value="治療性流產"><span>治療性流產</span>
+					<h5 name="history_pregweek">孕期:</h5>
+					<input id="history_pregweek_special" type="radio" name="history_pregweek" value="足月產"><span>足月產</span>
+					<input id="history_pregweek_special2" type="radio" name="history_pregweek" value="不足月產"><span>不足月產</span>
+					<span id="history_pregweek"></span>
+					<h5 name="history_pregprocess">產程:</h5>
+					<input type="checkbox" name="history_pregprocess" value="自然產"><span>自然產</span>
+					<input type="checkbox" name="history_pregprocess" value="剖腹產"><span>剖腹產</span>
+					<input type="checkbox" name="history_pregprocess" value="真空吸引/產鉗"><span>真空吸引/產鉗</span>
+					<input type="checkbox" name="history_pregprocess" value="生產時窒息"><span>生產時窒息</span>
+					<input type="checkbox" name="history_pregprocess" value="胎兒窘迫症"><span>胎兒窘迫症</span>
+					<input type="checkbox" name="history_pregprocess" value="胎兒急救"><span>胎兒急救</span>
+					<input type="checkbox" name="history_pregprocess" value="出生時臍帶繞頸"><span>出生時臍帶繞頸</span>
+				</div>
+				<h4 name="neonatal_screening">3.新生兒篩檢:</h4>
+				<input id="neonatal_screeningcheck" type="radio" name="neonatal_screening" value="正常"><span>正常</span>
+				<input id="neonatal_screeningcheck2" type="radio" name="neonatal_screening" value="異常"><span>異常</span><span id="neonatal_screeningcontent"></span>
+				
+				<h4>4.生理異常:</h4>
+				<h5 name="abnormal_neonatal">A.新生期及幼兒期:</h5>
+				<input type="checkbox" onclick="clickNo(this)" name="abnormal_neonatal" value="無"><span>無</span>
+				<input type="checkbox" name="abnormal_neonatal" value="曾住過加護病房"><span>曾住過加護病房</span>
+				<input type="checkbox" name="abnormal_neonatal" value="顱內出血"><span>顱內出血</span>
+				<input type="checkbox" name="abnormal_neonatal" value="呼吸暫停"><span>呼吸暫停</span>
+				<input type="checkbox" name="abnormal_neonatal" value="吸吮不佳"><span>吸吮不佳</span>
+				<input type="checkbox" name="abnormal_neonatal" value="插鼻胃管"><span>插鼻胃管</span>
+				<input type="checkbox" name="abnormal_neonatal" value="曾禁食"><span>曾禁食</span>
+				<input type="checkbox" name="abnormal_neonatal" value="保溫箱"><span>保溫箱</span>
+				<input type="checkbox" name="abnormal_neonatal" value="曾住院"><span>曾住院</span>
+				<input type="checkbox" name="abnormal_neonatal" value="曾手術"><span>曾手術</span>
+				<input type="checkbox" name="abnormal_neonatal" value="抽筋"><span>抽筋</span>
+				<input type="checkbox" name="abnormal_neonatal" value="感染"><span>感染</span>
+				<input type="checkbox" name="abnormal_neonatal" value="黃膽"><span>黃膽</span>
+				<input type="checkbox" name="abnormal_neonatal" value="換血"><span>換血</span>
+				<h5 name="abnormal_disease">B.疾病史:</h5>
+				<input type="checkbox" onclick="clickNo(this)" name="abnormal_disease" value="無"><span>無</span>
+				<input type="checkbox" name="abnormal_disease" value="癲癇"><span>癲癇</span>
+				<input type="checkbox" name="abnormal_disease" value="腦部疾病"><span>腦部疾病</span>
+				<input type="checkbox" name="abnormal_disease" value="腦部外傷"><span>腦部外傷</span>
+				<input type="checkbox" name="abnormal_disease" value="意識不清"><span>意識不清</span>
+				<input id="abnormal_diseasecheck" type="checkbox" name="abnormal_disease" value="其他重大疾病"><span>其他重大疾病</span><span id="abnormal_diseasecontent"></span>
+				<h5 name="abnormal_develop">C.發展史:</h5>
+				<p>頸部控制<select name="abnormal_develop" class="opt1year"><option value=""></option></select>個月</p>
+				<p>翻身<select name="abnormal_develop" class="opt1year"><option value=""></option></select>個月</p>
+				<p>坐<select name="abnormal_develop" class="opt1year"><option value=""></option></select>個月</p>
+				<p>爬<select name="abnormal_develop" class="opt1year"><option value=""></option></select>個月</p>
+				<p>走<select name="abnormal_develop" class="opt2year"><option value=""></option></select>個月</p>
+				<p>伸手抓物<select name="abnormal_develop" class="opt3year"><option value=""></option></select>個月</p>
+				<p>塗鴉<select name="abnormal_develop" class="opt2year"><option value=""></option></select>個月</p>
+				<p>第一個有意義單字<select name="abnormal_develop" class="opt2year"><option value=""></option></select>個月</p>
+			</div>
+		</form>
+	<br>
+	<!-- <button id="formsubmit">送出</button> -->
+	<div id="ready"></div>
+	<div id="chpart" style="display: none">
+		<button id="prev" style="display:none">上一頁</button>
+		<button id="next">下一頁</button>
+	</div>
+</body>
+</html>

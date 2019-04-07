@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" NAME="ROBOTS" CONTENT="NOARCHIVE"/>
+<META HTTP-EQUIV="EXPIRES" CONTENT="0">
+<title>建檔頁面</title>
+<link href="http://cdnjs.cloudflare.com/ajax/libs/alertify.js/0.3.10/alertify.core.css" rel="stylesheet">  
+<link href="http://cdnjs.cloudflare.com/ajax/libs/alertify.js/0.3.10/alertify.default.css" rel="stylesheet">  
+<script src="http://cdnjs.cloudflare.com/ajax/libs/alertify.js/0.3.10/alertify.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="../../js/updatemidcase.js"></script>
+</head>
+<style type="text/css">
+	#form{
+		background-color: lightblue;
+	}
+	#form2{
+		background-color: #FAEBD7;
+	}
+	textarea{
+		height: 100px;
+		width: 30%;
+	}
+</style>
+<body>
+	<button class="index">首頁</button>
+	<form id="form2">
+		<h1>病歷更新</h1>
+		<p>
+			姓名:
+			<input type="text" name="name">
+			性別:
+			<input type="radio" name="sex" value="男" checked="true">男
+			<input type="radio" name="sex" value="女">女
+			病歷號碼:
+			<input id="getcaseid" type="text" name="id">
+		</p>
+		<p>
+			出生日期
+			<input type="date" name="birthday" value = "2000-01-01">
+			更新日期
+			<input id="date2" type="date" name="date" value = "2000-01-01">
+		</p>
+		<p>
+			物理治療評估: 工具
+			<select name="physical_tool">
+				<option value="PDMS-II">PDMS-II</option>
+				<option value="MABC">MABC</option>
+				<option value="無"></option>
+			</select>
+			結果
+			<select name="physical_result">
+				<option value="正常">正常</option>
+				<option value="邊緣">邊緣</option>
+				<option value="遲緩">遲緩</option>
+			</select>
+			發展商數
+			<input type="number" name="physical_number">
+			PR
+			<input type="number" name="physical_pr">
+		</p>
+		<textarea name="physical_remarks"></textarea>
+		<p>
+			職能治療評估: 工具
+			<select name="function_tool">
+				<option value="PDMS-II">PDMS-II</option>
+				<option value="MABC">MABC</option>
+				<option value="無"></option>
+			</select>
+			結果
+			<select name="function_result">
+				<option value="正常">正常</option>
+				<option value="邊緣">邊緣</option>
+				<option value="遲緩">遲緩</option>
+			</select>
+			發展商數
+			<input type="number" name="function_number">
+			PR
+			<input type="number" name="function_pr">
+		</p>
+		<textarea name="function_remarks"></textarea>
+		<p>
+			語言治療評估:
+		</p>
+		<p>
+			口語理解工具
+			<select name="oral_comprehension_tool">
+				<option value="0~3歲華語嬰幼兒溝通及語言篩檢測驗">0~3歲華語嬰幼兒溝通及語言篩檢測驗</option>
+				<option value="張欣戊學前兒童語言能力測驗">張欣戊學前兒童語言能力測驗</option>
+				<option value="修訂畢保得圖畫詞彙測驗">修訂畢保得圖畫詞彙測驗</option>
+				<option value="修訂學前兒童語言障礙評量表">修訂學前兒童語言障礙評量表</option>
+				<option value="修訂學齡兒童語言障礙評量表">修訂學齡兒童語言障礙評量表</option>
+				<option value="華語兒童詞彙理解與表達測驗">華語兒童詞彙理解與表達測驗</option>
+				<option value="華語嬰幼兒溝通發展量表">華語嬰幼兒溝通發展量表</option>
+				<option value="非標準化評估，輔以臨床觀察">非標準化評估，輔以臨床觀察</option>
+			</select>
+			結果
+			<select name="oral_comprehension_result">
+				<option value="正常">正常</option>
+				<option value="邊緣">邊緣</option>
+				<option value="遲緩">遲緩</option>
+			</select>
+			能力
+			<input type="text" name="oral_comprehension_ability">
+		</p>
+		<p>
+			口語表達工具
+			<select name="oral_expression_tool">
+				<option value="0~3歲華語嬰幼兒溝通及語言篩檢測驗">0~3歲華語嬰幼兒溝通及語言篩檢測驗</option>
+				<option value="張顯達圖片命名測驗">張顯達圖片命名測驗</option>
+				<option value="修訂學前兒童語言障礙評量表">修訂學前兒童語言障礙評量表</option>
+				<option value="修訂學齡兒童語言障礙評量表">修訂學齡兒童語言障礙評量表</option>
+				<option value="華語兒童詞彙理解與表達測驗">華語兒童詞彙理解與表達測驗</option>
+				<option value="華語嬰幼兒溝通發展量表">華語嬰幼兒溝通發展量表</option>
+				<option value="非標準化評估，輔以臨床觀察">非標準化評估，輔以臨床觀察</option>
+			</select>
+			結果
+			<select name="oral_expression_result">
+				<option value="正常">正常</option>
+				<option value="邊緣">邊緣</option>
+				<option value="遲緩">遲緩</option>
+			</select>
+			能力
+			<input type="text" name="oral_expression_ability">
+		</p>
+		<textarea name="oral_remarks"></textarea>
+		<p>
+			心理治療評估:
+		</p>
+		<p>
+			工具
+			<select name="psychotherapy_tool">
+				<option value="WPPSI-R">WPPSI-R</option>
+				<option value="Bayley-II">Bayley-II</option>
+			</select>
+			結果
+			<select name="psychotherapy_result">
+				<option value="平均">平均</option>
+				<option value="中下">中下</option>
+				<option value="邊緣">邊緣</option>
+				<option value="輕度智能不足">輕度智能不足</option>
+				<option value="中度智能不足">中度智能不足</option>
+			</select>
+			全智商
+			<input type="number" name="psychotherapy_iq">
+			PR
+			<input type="number" name="psychotherapy_pr">
+		</p>
+		<textarea name="psychotherapy_remarks"></textarea>
+		<h3>一、個案轉介來源:</h3>
+		<input type="radio" name="datafrom" value="家長自己" checked="true">家長自己
+		<input type="radio" name="datafrom" value="親友提及">親友提及
+		<input type="radio" name="datafrom" value="醫療單位">醫療單位
+		<input type="radio" name="datafrom" value="社政單位">社政單位
+		<input type="radio" name="datafrom" value="教育單位">教育單位
+		<input id="other" type="radio" name="datafrom" value="其他">其他
+		<input type="text" name="othercontent" disabled='false'>		
+		<br>
+		<br>
+		<button type="submit">新增</button>
+	</form>
+</body>
+</html>

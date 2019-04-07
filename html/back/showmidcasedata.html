@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" NAME="ROBOTS" CONTENT="NOARCHIVE"/>
+<META HTTP-EQUIV="EXPIRES" CONTENT="0">
+<title>病例詳細資料</title>
+<script type="text/javascript" src="../../import/jQuery-3.2.1/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../import/DataTables-1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="../../import/Buttons-1.4.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="../../import/JSZip-2.5.0/jszip.min.js"></script>
+<script type="text/javascript" src="../../import/Buttons-1.4.2/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="../../import/Select-1.2.3/js/dataTables.select.min.js"></script>
+
+<script src="../../js/showmidcasedata.js"></script>
+<link rel="stylesheet" type="text/css" href="../../import/DataTables-1.10.16/css/jquery.dataTables.min.css">
+<style type="text/css">
+.classa{
+	background-color: #F5F5DC;
+}
+.classb{
+	background-color: #A5A54C;
+}
+.classc{
+	background-color: #AAAADC;
+}
+.classd{
+	background-color: #FAAADC;
+}
+.classe{
+	background-color: #FA1ADF;
+}
+	table { 
+  border: 0; 
+  font-family: arial; 
+  font-size:14px;
+} 
+.mainquestion{
+	background-color: #F5F5DC;
+}
+.mainquestion2{
+	background-color: #C1F5FC;
+}
+.mainquestion3{
+	background-color: #B1A5DC;
+}
+.mainquestion4{
+	background-color: #C8F5DC;
+}
+th{
+	min-width:100px;
+}
+.short{
+	min-width:20px;
+}
+.mid{
+	min-width:110px;	
+}
+.long{
+	min-width:300px;
+}
+#table_paginate{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background-color: white
+}
+#table_filter{
+	position: fixed;
+  top: 2%;
+  right: 0;
+  background-color: white
+}
+input[type=checkbox]{
+	height: 50px;
+	width: 50px;
+}
+tfoot {
+    display: table-header-group;
+}
+</style>
+</head>
+<body>
+	<h1>歷年病歷 <button class="index">首頁</button><button id="update1">修改病歷</button><button id="deletehead">刪除病歷</button></h1><a id="addmidcase" target='_self'>添加病歷</a>
+	<table id="tablehead" class="display" border="1">
+		<thead id="thead">
+			<tr>
+				<th><input id ="selectall2" type="checkbox"></th>
+				<th>病歷號碼(點擊號碼查看詳細資料)</th>
+				<th>建檔日期</th>
+				<th>姓名</th>
+				<th>性別</th>
+				<th>生日</th>
+				<th class="classa">物理工具</th>
+				<th class="classa">物理結果</th>
+				<th class="classa">物理發展商數</th>
+				<th class="classa">物理PR</th>
+				<th class="classa">備註</th>
+				<th class="classb">職能工具</th>
+				<th class="classb">職能結果</th>
+				<th class="classb">職能發展商數</th>
+				<th class="classb">職能PR</th>
+				<th class="classb">備註</th>
+				<th class="classc">口語理解工具</th>
+				<th class="classc">口語理解結果</th>
+				<th class="classc">口語理解能力</th>
+				<th class="classc">口語表達工具</th>
+				<th class="classc">口語表達結果</th>
+				<th class="classc">口語表達能力</th>
+				<th class="classc">備註</th>
+				<th class="classe">心理工具</th>
+				<th class="classe">心理結果</th>
+				<th class="classe">心理全智商</th>
+				<th class="classe">心理PR</th>
+				<th class="classe">備註</th>
+				<th>個案轉介來源</th>
+				<th>備註</th>
+				<th></th>
+			</tr>
+		</thead>
+		
+		<tbody id="tbody2"></tbody>
+	</table>
+	<br>
+	<br>
+	<br>
+	<br>
+	<h1>填答資料</h1>
+	開始日<input type="date" id="startday">
+	結束日<input type="date" id="endday">
+	<button id="filter">篩選</button>
+	<button id="reset">重新設置篩選條件</button>
+	<button id="update2">修改填答資料</button>
+	<button id="button">刪除填答資料</button>
+	<br>
+	<br>
+	<!-- <h2 id="remarks">備註:</h2> -->
+	<table border="1" id="table" class="display">
+		<thead id="thead">
+			<tr>
+				<th><input id ="selectall" type="checkbox"></th>
+				<th>代號</th>
+				<th>病歷號碼</th>
+				<th>填寫時間</th>
+				<th>身高</th>
+				<th>體重</th>
+				<th>頭圍</th>
+				<th>目前主要照顧者</th>
+				<th>就學歷史</th>
+				<th class="mainquestion">語言</th>
+				<th class="mainquestion">動作</th>
+				<th class="mainquestion">學習</th>
+				<th class="mainquestion">人際</th>
+				<th class="mainquestion">情緒</th>
+				<th class="mainquestion">活動與注意力</th>
+				<th class="mainquestion">感端知覺</th>
+				<th class="mainquestion">生活作息</th>
+				<th class="mainquestion">怪異言行</th>
+				<th class="mainquestion">自傷行為</th>
+				<th class="mainquestion">不知如何教導或幫助小孩</th>
+				<th>就診目的</th>
+				<th class="mainquestion2">父母婚姻狀況</th>
+				<th class="mainquestion2">手足人數</th>
+				<th class="mainquestion2">父親姓名</th>
+				<th class="mainquestion2">父親年齡</th>
+				<th class="mainquestion2">父親教育程度</th>
+				<th class="mainquestion2">父親職業</th>
+				<th class="mainquestion2">父親國籍</th>
+				<th class="mainquestion2">母親姓名</th>
+				<th class="mainquestion2">母親年齡</th>
+				<th class="mainquestion2">母親教育程度</th>
+				<th class="mainquestion2">母親職業</th>
+				<th class="mainquestion2">母親國籍</th>
+				<th class="mainquestion2">目前居住家庭型態</th>
+				<th class="mainquestion3">療育現況</th>
+				<th class="mainquestion3">曾接受過的療育(上課)種類</th>
+				<th class="mainquestion3">療育(上課)地點</th>
+				<th class="mainquestion3">目前的療育(上課)頻率</th>
+				<th class="mainquestion4">發展及疾病史</th>
+				<th class="mainquestion4">營養狀況</th>
+				<th class="mainquestion4">生理疾病</th>
+				<th class="mainquestion4">母親孕期用藥狀況</th>
+				<th class="mainquestion4">母親物質濫用習慣</th>
+				<th class="mainquestion4">孕次</th>
+				<th class="mainquestion4">生次</th>
+				<th class="mainquestion4">流產</th>
+				<th class="mainquestion4">孕期</th>
+				<th class="mainquestion4">產程狀況</th>
+				<th class="mainquestion4">新生兒篩檢</th>
+				<th class="mainquestion4">新生兒及幼兒期</th>
+				<th class="mainquestion4">疾病史</th>
+				<th class='long'>發展史</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+			</tr>
+		</tfoot>
+		<tbody id="tbody"></tbody>
+	</table>
+	<!-- 下載檔案用 隱藏
+	<iframe name="DownLoadiFrame" width="0" height="0"></iframe>
+	<form target="DownLoadiFrame" id="DownLoadForm" action="../../Excel/output.xlsx" method="post">
+	    <input type="hidden" name="type" />
+	</form>
+	下載檔案用 隱藏
+	<button id="export">匯出EXCEL</button> -->
+	<!-- <a href="http://nancytest.esy.es/Ptt/contacts.csv" download="contacts.csv">Download file</a> -->
+</body>
+</html>

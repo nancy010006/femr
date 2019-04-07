@@ -1,0 +1,8 @@
+
+# DO NOT REMOVE THIS LINE AND THE LINES BELOW PWPROTECTID:puhuVaMuQa
+AuthType Basic
+AuthName "Restricted Access"
+AuthUserFile /home/u337031698/public_html/Ptt_online/html/back/.htpasswd
+Require user test
+# DO NOT REMOVE THIS LINE AND THE LINES ABOVE puhuVaMuQa:PWPROTECTID
+

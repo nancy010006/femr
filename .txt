@@ -1,0 +1,13 @@
+db writetime型態改為date 要移到caseid下方
+question controller更改
+show更改
+db sex 改為varchar date sex name移動
+showmidcase
+showmidcasedata
+midcase controller
+刪除病例
+
+預計修改
+
+編輯問卷
+刪除問卷及病歷
