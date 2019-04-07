@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" NAME="ROBOTS" CONTENT="NOARCHIVE"/>
+<META HTTP-EQUIV="EXPIRES" CONTENT="0">
+<title>兒童睡眠行為問卷</title>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="../../js/sleepQuestion.js"></script>
+<link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="../../vendor/bootstrap/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<style type="text/css">
+  body {
+  padding-top: 2rem;
+}
+.starter-template {
+  padding: 0rem 1.5rem;
+  text-align: center;
+}
+input[type=radio]{
+  height: 30px;
+  width: 30px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  
+  <div class="starter-template">
+    <h1>兒童睡眠行為問卷（CSHQ）</h1>
+    <p class="lead">（適用於學齡前和學齡兒童）
+指導語：下面是一些關於孩子的睡眠習慣和睡眠中情况的問题，請請根據孩子最
+近一周來的實際情形進行回答或選擇（只選一項，用“”鈎出）。
+</p>
+<p>。如果最近一周您家有特殊情况（如孩子因耳朵有炎症而睡不好覺、家裡的電視機壞了等），請根據另外最能代表平常情况的一周的情形來答。</p>
+<p>請注意：經常：是指每周有5~7 次；有時：是指每周有 2~4 次；很少：是指每周有 0~1 次。</p>
+<p>另外您認為這樣的睡眠習惯是否有問題？請用“”鈎出您的答案。是：表示認為有問題；否：表示認為沒有問題；不好判斷：表示無法判断是否有問题。謝謝您的合作！</p>
+  </div>
+    <form class="needs-validation">
+      <h3 class="mb-3">問卷編號<span id="question_no">123</span>開始填寫</h3>
+      <hr class="mb-4">
+      <div id="part1">
+        <h3 class="mb-3">臨睡前</h3>
+        <div class="form-row">
+          <div class="col-6">
+            <label>您孩子每晚的上床時間一般在</label>
+          </div>
+          <div class="col-1">
+            <input type="text" maxlength="2" class="form-control" placeholder="時/24" required="">
+          </div>
+          <div class="col-1">
+            <input type="text" maxlength="2" class="form-control" placeholder="分/00" required="">
+          </div>
+        </div>
+        <hr class="mb-4">
+      </div>
+      <hr class="mb-3">
+      <div id="part2">
+        <h3 class="mb-3">睡眠行為</h3>
+        <div class="form-row">
+          <div class="col-6">
+            <label>孩子每天睡眠的時間（含夜間和白天的睡眠）一般在</label>
+          </div>
+          <div class="col-1">
+            <input type="text" maxlength="2" class="form-control" placeholder="小時/24" required="">
+          </div>
+          <div class="col-1">
+            <input type="text" maxlength="2" class="form-control" placeholder="分鐘/00" required="">
+          </div>
+        </div>
+      <hr class="mb-3">
+      </div>
+      <hr class="mb-3">
+      <div id="part3">
+        <h3 class="mb-3">夜間覺醒</h3>
+        <div class="form-row">
+          <div class="col-6">
+            <label>孩子夜間每次覺醒通常持續的時間為</label>
+          </div>
+          <div class="col-1">
+            <input type="text" maxlength="3" class="form-control" placeholder="分鐘/60" required="">
+          </div>
+        </div>
+      <hr class="mb-3">
+      </div>
+      <hr class="mb-3">
+      <div id="part4">
+        <h3 class="mb-3">早晨醒來與白天睡眠</h3>
+        <div class="form-row">
+          <div class="col-6">
+            <label>孩子每天早晨通常在幾時幾分醒来</label>
+          </div>
+          <div class="col-1">
+            <input type="text" maxlength="2" class="form-control" placeholder="小時/24" required="">
+          </div>
+          <div class="col-1">
+            <input type="text" maxlength="2" class="form-control" placeholder="分鐘/60" required="">
+          </div>
+        </div>
+      <hr class="mb-3">
+      </div>
+      <hr class="mb-3">
+      <div id="part5">
+        <h3 class="mb-3">孩子在下列活動中看起來非常困倦甚至睡着了（請選擇一項適合的内容）：</h3>
+      <hr class="mb-3">
+      </div>
+      <hr class="mb-3">
+      <button class="btn btn-primary btn-lg btn-block" type="submit">填寫完成</button>
+    </form>
+  <footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1"></p>
+    <ul class="list-inline">
+    </ul>
+  </footer>
+</div>
+
+</body>
+</html>
