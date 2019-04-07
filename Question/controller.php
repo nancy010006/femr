@@ -191,6 +191,20 @@ switch($act) {
                         echo json_encode($table, JSON_UNESCAPED_UNICODE,JSON_FORCE_OBJECT);
                 }
                 break;
+        case "DataTableGetSleepQuestions":
+                if ($table=DataTableGetSleepQuestions($requestData)) {
+                    if(count($table['data'])==0){
+                            array_unshift($table,array('status' => 204));
+                            echo json_encode($table, JSON_UNESCAPED_UNICODE,JSON_FORCE_OBJECT);
+                    }else{
+                        array_unshift($table,array('status' => 200));
+                        echo json_encode($table, JSON_UNESCAPED_UNICODE,JSON_FORCE_OBJECT);
+                    }
+                } else {
+                        $table=['status' => 500];
+                        echo json_encode($table, JSON_UNESCAPED_UNICODE,JSON_FORCE_OBJECT);
+                }
+                break;
         default:
 }
 ?>

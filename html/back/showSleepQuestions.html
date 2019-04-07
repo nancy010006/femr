@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" NAME="ROBOTS" CONTENT="NOARCHIVE"/>
+<META HTTP-EQUIV="EXPIRES" CONTENT="0">
+<title>所有睡眠問卷資料</title>
+<script type="text/javascript" src="../../import/jQuery-3.2.1/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../import/DataTables-1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="../../import/Buttons-1.4.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="../../import/JSZip-2.5.0/jszip.min.js"></script>
+<script type="text/javascript" src="../../import/Buttons-1.4.2/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="../../import/Select-1.2.3/js/dataTables.select.min.js"></script>
+
+<script src="../../js/showSleepQuestion.js"></script>
+<script src="../../js/myTable.js"></script>
+<link rel="stylesheet" type="text/css" href="../../import/DataTables-1.10.16/css/jquery.dataTables.min.css">
+<style type="text/css">
+	table { 
+  border: 0; 
+  font-family: arial; 
+  font-size:14px; 
+} 
+th{
+	min-width:80px;
+}
+.classa{
+	background-color: #F5F5DC;
+}
+.classb{
+	background-color: #A5A54C;
+}
+.classc{
+	background-color: #AAAADC;
+}
+.classd{
+	background-color: #FAAADC;
+}
+.classe{
+	background-color: #FA1ADF;
+}
+#table_paginate{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background-color: white
+}
+#table_filter{
+	position: fixed;
+  top: 2%;
+  right: 0;
+  background-color: white
+}
+input[type=checkbox]{
+	height: 50px;
+	width: 50px;
+}
+tfoot {
+    display: table-header-group;
+}
+</style>
+</head>
+<body>
+	<h1>所有睡眠問卷資料 <button class="index">首頁</button></h1>
+	建檔開始日<input type="date" id="startday">
+	建檔結束日<input type="date" id="endday">
+	<button id="filter">篩選</button>
+	<button id="reset">重新設置篩選條件</button>
+	<button id="button">刪除</button>
+	<button id="update">修改</button>
+	<br>
+	<br>
+	<table id="table" class="display" border="1">
+		<thead id="thead">
+			<tr>
+				<th><input id ="selectall" type="checkbox"></th>
+				<th>index</th>
+				<th>病歷號碼</th>
+				<th>建檔日期</th>
+				<th>早晨通常在幾時幾分醒来</th>
+				<th>每次覺醒通常持續的時間</th>
+				<th>每晚的上床時間</th>
+				<th>孩子每天睡眠的時間</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+			</tr>
+		</tfoot>
+		
+		<tbody id="tbody"></tbody>
+	</table>
+
+	<!-- 下載檔案用 隱藏 -->
+	<iframe name="DownLoadiFrame" width="0" height="0"></iframe>
+	<form target="DownLoadiFrame" id="DownLoadForm" action="excel/output.xlsx" method="post">
+	    <input type="hidden" name="type" />
+	</form>
+	<!-- 下載檔案用 隱藏 -->
+	<!-- <button id="export">匯出EXCEL</button> -->
+	<!-- <a href="http://nancytest.esy.es/Ptt/contacts.csv" download="contacts.csv">Download file</a> -->
+</body>
+</html>
