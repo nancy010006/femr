@@ -70,10 +70,26 @@ switch($act) {
                 $alldata = @$data[1];
                 echo (makeReturnMessage(updateQuestion($alldata)));
                 break;
+        case "updateSleepQuestion":
+                $table=array();
+                $alldata = @$data[1];
+                echo (makeReturnMessage(updateSleepQuestion($alldata)));
+                break;
         case "getQuestionDetail":
                 $table=array();
                 $id = @$data[1]['id'];
                 if ($table=getQuestionDetail($id)) {
+                        array_unshift($table,array('status' => 200));
+                        echo json_encode($table, JSON_UNESCAPED_UNICODE,JSON_FORCE_OBJECT);
+                } else {
+                        $table=['status' => 500];
+                        echo json_encode($table, JSON_UNESCAPED_UNICODE,JSON_FORCE_OBJECT);
+                }
+                break;
+        case "getSleepQuestionDetail":
+                $table=array();
+                $id = @$data[1]['id'];
+                if ($table=getSleepQuestionDetail($id)) {
                         array_unshift($table,array('status' => 200));
                         echo json_encode($table, JSON_UNESCAPED_UNICODE,JSON_FORCE_OBJECT);
                 } else {
@@ -89,6 +105,10 @@ switch($act) {
         case "deleteData":
                 $alldata = @$data[1];
                 echo (makeReturnMessage(deleteData($alldata)));
+                break;
+        case "deleteSleepData":
+                $alldata = @$data[1];
+                echo (makeReturnMessage(deleteSleepData($alldata)));
                 break;
         case "getQuestionList":
                 if ($table=getQuestionList()) {

@@ -27,6 +27,7 @@ input[type=radio]{
 }
 </style>
 </head>
+
 <body>
 <div class="container">
   
@@ -120,7 +121,7 @@ input[type=radio]{
       <hr class="mb-3">
       </div>
       <hr class="mb-3">
-      <button class="btn btn-primary btn-lg btn-block" type="submit">填寫完成</button>
+      <button class="btn btn-primary btn-lg btn-block" type="submit">修改</button>
     </form>
   <footer class="my-5 pt-5 text-muted text-center text-small">
     <p class="mb-1"></p>
@@ -131,12 +132,12 @@ input[type=radio]{
 
 </body>
 <script type="text/javascript">
-  
 function sendData(){
     var serializeform = $('#form').serializeArray();
-    data = objectifyForm(serializeform,'addSleepQuestion');
+    data = objectifyForm(serializeform,'updateSleepQuestion');
     console.log(data);
     data[1].midcase_id = $('#question_no').val();
+    data[1].id = id;
     $.ajax({
         url:'../../Question/controller.php',
         type: 'POST',
@@ -146,7 +147,7 @@ function sendData(){
                 result=eval(r);
                 console.log(result);
                 if(result[0].status==200){
-                    var success = '<div class="result d-flex flex-column justify-content-center align-items-center"><h1>新增成功 感謝您的填寫</h1></div>';
+                    var success = '<div class="result d-flex flex-column justify-content-center align-items-center"><h1>修改成功</h1><a href="index.html">回首頁</a></div>';
                     $('body').html(success);
                 }else if(result[0].status==423){
                     $.confirm({
@@ -187,6 +188,52 @@ function sendData(){
         }
     });
 }
+  Request = GetRequest();  
+  function GetRequest() {        
+       var url = location.search;   
+       var theRequest = new Object();        
+       if (url.indexOf("?") != -1) {         
+          var str = url.substr(1);           
+          strs = str.split("&");         
+          for(var i = 0; i < strs.length; i++) {          
+             theRequest[strs[i].split("=")[0]]=decodeURI(strs[i].split("=")[1]);         
+          }          
+       }         
+       return theRequest;
+  } 
+  var id= Request['id'];
+  var getdata = [{"act":"getSleepQuestionDetail"},{"id":id}];
+    $.ajax({
+            url:'../../Question/controller.php',
+            type: 'POST',
+            data:JSON.stringify(getdata),
+            async:false,
+            success:function(r){
+              var result = eval(r);
+              console.log(result);
+              // 大標直接填充
+              $('#question_no').val(result[1].midcase_id);
+              $("input[name=awake_at]").val(result[1].awake_at);
+              $("input[name=awake_time]").val(result[1].awake_time);
+              $("input[name=sleep_at]").val(result[1].sleep_at);
+              var sleep_time_hour = result[1].sleep_keep_time.substr(0,2);
+              var sleep_time_minute = result[1].sleep_keep_time.substr(2,2);
+              setTimeout(function(){$("select[name=sleep_time_hour] option[value="+sleep_time_hour+"]").prop('selected', true); }, 200);
+              setTimeout(function(){$("select[name=sleep_time_minute] option[value="+sleep_time_minute+"]").prop('selected', true); }, 200);
+              
+              $.each(result[1] , function(index, el) {
+                if(index.substr(0,1)=='p'){
+                  setTimeout(function(){$("input[name="+index+"][value="+el+"]").prop('checked',true); }, 200);
+                }
+                
+              });
+
+            },
+            error:function(err){
+                    alert("發生未預期的錯誤 請聯絡管理員");
+                    console.log(err);
+        }
+    });
 
 </script>
 </html>

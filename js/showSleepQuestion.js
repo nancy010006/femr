@@ -64,10 +64,11 @@ $(document).ready(function() {
             ]
         },
     ];
-    $.each(originDatas,function(index,originData) {
+    var class_list = ['a','b','c','d','e','f','g'];
+    $.each(originDatas,function(ori_index,originData) {
         // makeQuestionTips(originData.part);
-        $.each(originData.questions,function(index, question) {
-        	$('#thead tr').append('<th class="classa">'+question.desc+'</th>');
+        $.each(originData.questions,function(q_index, question) {
+        	$('#thead tr').append('<th class="class'+class_list[ori_index]+'">'+question.desc+'</th>');
         	$('#tfoot tr').append('<th></th>');
             // input name 為p1001 p2015 之類 對應題目寫在資料庫註解
             // var input_name = 'p'+(parseInt(originData.part.substr(4,1)*1000)+parseInt(index+1));

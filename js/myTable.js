@@ -22,7 +22,7 @@ $(document).ready(function() {
         console.log(dataTable.rows('.selected').data());
         console.log(dataTable.rows('.selected'));
         var length = dataTable.rows('.selected').data().length;
-        var postdata = [{"act":"deleteData"}];
+        var postdata = [{"act":"deleteSleepData"}];
         var obj={};
         var tip="確定要刪除嗎?以下是您選擇的病歷號碼及填寫時間\n";
         for (var i = 0; i < length; i++) {
@@ -69,7 +69,7 @@ $(document).ready(function() {
         }else{
             var data = dataTable.rows('.selected').data()[0];
             console.log(data);
-            window.location.href = "updatedata.html?id="+data[0];
+            window.location.href = "updateSleepData.html?id="+data[0];
         }
     });
     $("#selectall").click(function(event){
@@ -82,7 +82,6 @@ $(document).ready(function() {
         }
     });
     $('#table tbody').on( 'click', 'tr', function () {
-        console.log(123);
         console.log(dataTable.row(".odd"));
     });
 });

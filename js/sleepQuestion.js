@@ -64,6 +64,7 @@ $(document).ready(function() {
             ]
         },
     ];
+    makeTimeSelect();
     $.each(originDatas,function(index,originData) {
         makeQuestionTips(originData.part);
         $.each(originData.questions,function(index, question) {
@@ -73,8 +74,8 @@ $(document).ready(function() {
         });
     });
     
-    $('input').prop('checked',true);
-    $('input').val('1');
+    // $('input').prop('checked',true);
+    // $('input').val('1');
     $('#form').submit(function(event) {
         event.preventDefault();
         $.confirm({
@@ -109,60 +110,21 @@ function makeQuestionTips(where){
     $("#"+where+"").append(question_tips_part2);
     $("#"+where+"").append(question_tips_part3);
 }
-function sendData(){
-    var serializeform = $('#form').serializeArray();
-    data = objectifyForm(serializeform,'addSleepQuestion');
-    console.log(data);
-    data[1].midcase_id = $('#question_no').val();
-    $.ajax({
-        url:'../../Question/controller.php',
-        type: 'POST',
-        data:JSON.stringify(data),
-        async:false,
-        success:function(r){
-                result=eval(r);
-                console.log(result);
-                if(result[0].status==200){
-                    var success = '<div class="result d-flex flex-column justify-content-center align-items-center"><h1>新增成功 感謝您的填寫</h1></div>';
-                    $('body').html(success);
-                }else if(result[0].status==423){
-                    $.confirm({
-                        title: 'Encountered an error!',
-                        icon: 'fa fa-warning',
-                        content: result[1].reason,
-                        type: 'red',
-                        typeAnimated: true,
-                        buttons: {
-                            close: function () {
-                            }
-                        }
-                    });
-                }else{
-                    $.confirm({
-                        title: 'Encountered an error!',
-                        content: '發生未預期的錯誤 請聯絡管理員',
-                        type: 'red',
-                        typeAnimated: true,
-                        buttons: {
-                            close: function () {
-                            }
-                        }
-                    });
-                }
-        },
-        error:function(err){
-            $.confirm({
-                title: 'Encountered an error!',
-                content: '發生未預期的錯誤 請聯絡管理員',
-                type: 'red',
-                typeAnimated: true,
-                buttons: {
-                    close: function () {
-                    }
-                }
-            });
-        }
-    });
+function makeTimeSelect(){
+    for (var i = 0; i <= 24; i++) {
+        var value = paddingLeft(i.toString(),2);
+        $('#sleep_time_hour').append('<option value="' + value + '">' + value + '</option>')
+    }
+    for (var i = 0; i <= 60; i++) {
+        var value = paddingLeft(i.toString(),2);
+        $('#sleep_time_minute').append('<option value="' + value + '">' + value + '</option>')
+    }
+}
+function paddingLeft(str,lenght){
+    if(str.length >= lenght)
+        return str;
+    else
+        return paddingLeft("0" +str,lenght);
 }
 function objectifyForm(formArray,actvalue) {//serialize data function
         var returnArray=[];

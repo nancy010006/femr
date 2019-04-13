@@ -30,6 +30,19 @@ function getQuestionDetail($id) {
         return $table;
         // return json_encode($table, JSON_FORCE_OBJECT);
 }
+
+function getSleepQuestionDetail($id) {
+        global $conn;
+        $id = mysqli_real_escape_string($conn,$id);
+        $sql = "select * from sleep_question_datas where id='$id';";
+        $result = mysqli_query($conn,$sql);
+        $table = array();
+        // 將搜尋到的資料一筆一筆放進陣列再轉json
+        while($rs = mysqli_fetch_assoc($result)){
+                array_push($table,$rs);
+        }
+        return $table;
+}
 // function getMidCaseList() {
 //         global $conn;
 //         $sql = "select * from midcase order by midcase.id;";
@@ -90,6 +103,19 @@ function deleteData($alldata) {
         // return $table;
         // return json_encode($table, JSON_FORCE_OBJECT);
 }
+function deleteSleepData($alldata) {
+        global $conn;
+        $sql = "delete from sleep_question_datas where 1=0 ";
+        for ($i=0; $i <count($alldata) ; $i++) { 
+            $sql.="or id = '$alldata[$i]' ";
+        }
+        $result = mysqli_query($conn,$sql);
+        if(!mysqli_error($conn))
+            return 200;
+        else
+            return 500;
+}
+
 function getMidCaseData($startday,$endday,$caseid) {
         global $conn;
         $startday = mysqli_real_escape_string($conn,$startday);
@@ -410,6 +436,72 @@ function updateQuestion($alldata) {
         }
         return 123;
 }
+function updateSleepQuestion($alldata) {
+        global $conn;
+        date_default_timezone_set('Asia/Taipei');
+        // echo date("Y-m-d H:i:s");
+        $asiatime = date("Y-m-d H:i:s");
+        $id = mysqli_real_escape_string($conn,@$alldata['id']);
+        $midcase_id = mysqli_real_escape_string($conn,@$alldata['midcase_id']);
+        $awake_at = mysqli_real_escape_string($conn,@$alldata['awake_at']);
+        $awake_time = mysqli_real_escape_string($conn,@$alldata['awake_time']);
+        $sleep_at = mysqli_real_escape_string($conn,@$alldata['sleep_at']);
+        $sleep_time_hour = mysqli_real_escape_string($conn,@$alldata['sleep_time_hour']);
+        $sleep_time_minute = mysqli_real_escape_string($conn,@$alldata['sleep_time_minute']);
+        $p1001 = mysqli_real_escape_string($conn,@$alldata['p1001']);
+        $p1002 = mysqli_real_escape_string($conn,@$alldata['p1002']);
+        $p1003 = mysqli_real_escape_string($conn,@$alldata['p1003']);
+        $p1004 = mysqli_real_escape_string($conn,@$alldata['p1004']);
+        $p1005 = mysqli_real_escape_string($conn,@$alldata['p1005']);
+        $p1006 = mysqli_real_escape_string($conn,@$alldata['p1006']);
+        $p1007 = mysqli_real_escape_string($conn,@$alldata['p1007']);
+        $p1008 = mysqli_real_escape_string($conn,@$alldata['p1008']);
+        $p2001 = mysqli_real_escape_string($conn,@$alldata['p2001']);
+        $p2002 = mysqli_real_escape_string($conn,@$alldata['p2002']);
+        $p2003 = mysqli_real_escape_string($conn,@$alldata['p2003']);
+        $p2004 = mysqli_real_escape_string($conn,@$alldata['p2004']);
+        $p2005 = mysqli_real_escape_string($conn,@$alldata['p2005']);
+        $p2006 = mysqli_real_escape_string($conn,@$alldata['p2006']);
+        $p2007 = mysqli_real_escape_string($conn,@$alldata['p2007']);
+        $p2008 = mysqli_real_escape_string($conn,@$alldata['p2008']);
+        $p2009 = mysqli_real_escape_string($conn,@$alldata['p2009']);
+        $p2010 = mysqli_real_escape_string($conn,@$alldata['p2010']);
+        $p2011 = mysqli_real_escape_string($conn,@$alldata['p2011']);
+        $p2012 = mysqli_real_escape_string($conn,@$alldata['p2012']);
+        $p2013 = mysqli_real_escape_string($conn,@$alldata['p2013']);
+        $p2014 = mysqli_real_escape_string($conn,@$alldata['p2014']);
+        $p2015 = mysqli_real_escape_string($conn,@$alldata['p2015']);
+        $p3001 = mysqli_real_escape_string($conn,@$alldata['p3001']);
+        $p3002 = mysqli_real_escape_string($conn,@$alldata['p3002']);
+        $p4001 = mysqli_real_escape_string($conn,@$alldata['p4001']);
+        $p4002 = mysqli_real_escape_string($conn,@$alldata['p4002']);
+        $p4003 = mysqli_real_escape_string($conn,@$alldata['p4003']);
+        $p4004 = mysqli_real_escape_string($conn,@$alldata['p4004']);
+        $p4005 = mysqli_real_escape_string($conn,@$alldata['p4005']);
+        $p4006 = mysqli_real_escape_string($conn,@$alldata['p4006']);
+        $p5001 = mysqli_real_escape_string($conn,@$alldata['p5001']);
+        $p5002 = mysqli_real_escape_string($conn,@$alldata['p5002']);
+        $sleep_keep_time = $sleep_time_hour . $sleep_time_minute;
+        if ($id) { //if item is not empty
+                $sql = "select id from midcase where id='$midcase_id';";
+                $result = mysqli_query($conn,$sql);
+                // $table = array();
+                // print_r($result);
+                if($result->num_rows==0)
+                    return 423;
+                $sql = "update sleep_question_datas 
+                set midcase_id = '$midcase_id', awake_at = '$awake_at', awake_time = '$awake_time', sleep_at = '$sleep_at', sleep_keep_time = '$sleep_keep_time', p1001 = '$p1001', p1002 = '$p1002', p1003 = '$p1003', p1004 = '$p1004', p1005 = '$p1005', p1006 = '$p1006', p1007 = '$p1007', p1008 = '$p1008', p2001 = '$p2001', p2002 = '$p2002', p2003 = '$p2003', p2004 = '$p2004', p2005 = '$p2005', p2006 = '$p2006', p2007 = '$p2007', p2008 = '$p2008', p2009 = '$p2009', p2010 = '$p2010', p2011 = '$p2011', p2012 = '$p2012', p2013 = '$p2013', p2014 = '$p2014', p2015 = '$p2015', p3001 = '$p3001', p3002 = '$p3002', p4001 = '$p4001', p4002 = '$p4002', p4003 = '$p4003', p4004 = '$p4004', p4005 = '$p4005', p4006 = '$p4006', p5001 = '$p5001', p5002 = '$p5002' where id = '$id';";
+                if(mysqli_query($conn, $sql))
+                        return 200;
+                else if(mysqli_error($conn)=="Cannot add or update a child row: a foreign key constraint fails (`hospital`.`data`, CONSTRAINT `data_ibfk_1` FOREIGN KEY (`caseid`) REFERENCES `midcase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE)")
+                        return 422;
+                else
+                        return 500;
+        }else{
+                return 400;
+        }
+        // return 123;
+}
 function testadd($alldata) {
         global $conn;
 
@@ -618,11 +710,11 @@ function DataTableGetSleepQuestions($requestData) {
         $startday = $requestData['data'][1]['startday'];
         $endday = $requestData['data'][1]['endday'];
                 if(!empty($startday)&&empty($endday)){
-                       $sql .= "and writetime >= '$startday' ";
+                       $sql .= "and created_at >= '$startday' ";
                 }else if(empty($startday)&&!empty($endday)){
-                       $sql .= "and writetime <= '$endday' ";
+                       $sql .= "and created_at <= '$endday' ";
                 }else if(!empty($startday)&&!empty($endday)){
-                       $sql .= "and writetime >= '$startday' and writetime <= '$endday' ";
+                       $sql .= "and created_at >= '$startday' and created_at <= '$endday' ";
                 }else{
                 }
                 // print_r($requestData['search']);
