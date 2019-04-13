@@ -7,6 +7,8 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="../../js/sleepQuestion.js"></script>
 <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="../../vendor/jquery-confirm-v3.3.4/jquery-confirm.min.css">
+<script src="../../vendor/jquery-confirm-v3.3.4/jquery-confirm.min.js"></script>
 <script src="../../vendor/bootstrap/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <style type="text/css">
   body {
@@ -19,6 +21,9 @@
 input[type=radio]{
   height: 30px;
   width: 30px;
+}
+.result {
+  height: 100vh;
 }
 </style>
 </head>
@@ -38,7 +43,7 @@ input[type=radio]{
     <form id="form" class="needs-validation">
       <div class="form-row">
         <div class="col-3"> <h3 class="mb-3">問卷編號</h3></div>
-        <div class="col-2"><input type="text" id="question_no" class="form-control" placeholder="" required=""></div>
+        <div class="col-2"><input id="question_no" type="text" id="question_no" class="form-control" placeholder="" required=""></div>
       </div>
       <hr class="mb-4">
       <div id="part1">

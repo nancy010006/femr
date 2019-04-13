@@ -72,13 +72,27 @@ $(document).ready(function() {
             makeQuestionDiv(question.desc,originData.part,input_name);
         });
     });
+    
     $('input').prop('checked',true);
     $('input').val('1');
     $('#form').submit(function(event) {
         event.preventDefault();
-        var chk = confirm('確定要送出?');
-        if(chk)
-            sendData();
+        $.confirm({
+            title: 'warning!',
+            content: '確定要送出問卷嗎?',
+            theme:'modern',
+            buttons: {
+                sure: {
+                    text: '確定',
+                    btnClass: 'btn-blue',
+                    action: function(){
+                        sendData();
+                    }
+                },
+                取消: function () {
+                },
+            }
+        });
     });
 });
 
@@ -109,16 +123,44 @@ function sendData(){
                 result=eval(r);
                 console.log(result);
                 if(result[0].status==200){
-                    $('body').html('新增成功 感謝您的填寫');
+                    var success = '<div class="result d-flex flex-column justify-content-center align-items-center"><h1>新增成功 感謝您的填寫</h1></div>';
+                    $('body').html(success);
                 }else if(result[0].status==423){
-                    alert(result[1].reason);
+                    $.confirm({
+                        title: 'Encountered an error!',
+                        icon: 'fa fa-warning',
+                        content: result[1].reason,
+                        type: 'red',
+                        typeAnimated: true,
+                        buttons: {
+                            close: function () {
+                            }
+                        }
+                    });
                 }else{
-                    alert("發生未預期的錯誤 請聯絡管理員");
+                    $.confirm({
+                        title: 'Encountered an error!',
+                        content: '發生未預期的錯誤 請聯絡管理員',
+                        type: 'red',
+                        typeAnimated: true,
+                        buttons: {
+                            close: function () {
+                            }
+                        }
+                    });
                 }
         },
         error:function(err){
-                alert("發生未預期的錯誤 請聯絡管理員");
-                console.log(err);
+            $.confirm({
+                title: 'Encountered an error!',
+                content: '發生未預期的錯誤 請聯絡管理員',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    close: function () {
+                    }
+                }
+            });
         }
     });
 }
