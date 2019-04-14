@@ -111,11 +111,11 @@ function makeQuestionTips(where){
     $("#"+where+"").append(question_tips_part3);
 }
 function makeTimeSelect(){
-    for (var i = 0; i <= 24; i++) {
+    for (var i = 0; i < 24; i++) {
         var value = paddingLeft(i.toString(),2);
         $('#sleep_time_hour').append('<option value="' + value + '">' + value + '</option>')
     }
-    for (var i = 0; i <= 60; i++) {
+    for (var i = 0; i < 60; i++) {
         var value = paddingLeft(i.toString(),2);
         $('#sleep_time_minute').append('<option value="' + value + '">' + value + '</option>')
     }
