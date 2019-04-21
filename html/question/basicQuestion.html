@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" NAME="ROBOTS" CONTENT="NOARCHIVE"/>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<style type="text/css">
+	  body {
+		  padding-top: 2rem;
+		}
+		input[type=checkbox]{
+			height: 30px;
+			width: 30px;
+		}
+		input[type=radio]{
+			height: 30px;
+			width: 30px;
+		}
+		label{
+			font-size: 30px;
+		}
+		h2{
+			font-size: 45px;
+		}
+		h4{
+			font-size: 35px;
+		}
+		h5{
+			font-size: 30px;
+		}
+	</style>
+	<title></title>
+</head>
+<body>
+	<div class="container">
+		<form>
+			<div id="question_1">
+				<div class="row">
+					<div class="col-md-3 mb-3">
+			      <label>病歷號碼</label>
+			      <input type="text" class="form-control" value="" required="">
+			    </div>
+	      </div>
+			</div>
+
+			<div id="question_2">
+				<div class="row">
+					<h2>二、自小養育狀況</h2>
+				</div>
+				<hr class="mb-4">
+				<label>BMI: {{BMI}}</label>
+				<div class="row">
+					<template v-for="question in questions">
+						<div class="col-md-3 mb-3">
+				      <label>{{question.title}}</label>
+				      <input :name="question.input_name" type="number" class="form-control" v-model="question.value" required="">
+				    </div>
+					</template>
+				</div>
+				<div class="row">
+					<div class="col-md-3 mb-3">
+			      <label>{{caregiver.title}}</label>
+			      <select v-model="caregiver.value" class="custom-select d-block w-100" required="" @change="isforsetCare">
+	            <option v-for="option in caregiver.options" :value="option">{{option}}</option>
+	          </select>
+			    </div>
+			    <div v-if="caregiver.value=='其他'" class="col-md-6 mb-6">
+			      <label>請詳細填寫目前主要照顧者</label>
+			    	<input :name="caregiver.input_name" type="text" class="form-control" required="">
+			    </div>
+				</div>
+		    <label>{{who_found_question.title}}</label>
+		    <div class="row">
+					<div class="col-md-12 mb-12">
+				    <template v-for="option in who_found_question.options">
+							<label><input type="radio" :name="who_found_question.input_name" :value="option" v-model="who_found_question.value" required="">{{option}}</label>
+						</template>
+					</div>
+					<div v-if="who_found_question.value=='其他'" class="col-md-3 mb-3">
+			    	<input :name="caregiver.input_name" type="text" class="form-control" required="" placeholder="誰發現問題">
+			    </div>
+		    </div>
+			</div>
+
+			<div id="question_3">
+				<div class="row">
+					<h2>三、就學歷史</h2>
+				</div>
+				<hr class="mb-4">
+				<label>{{read_school.title}}</label>
+				<div class="row">
+					<div class="col-md-12 mb-12">
+						<template v-for="option in read_school.options">
+							<label><input type="radio" :name="read_school.input_name" v-model="read_school.value" :value="option" required="">{{option}}</label>
+						</template>
+					</div>
+				</div>
+				<div v-if="read_school.value=='就學過，但中斷'" class="row">
+					<div class="col-md-12 mb-12">
+						<template v-for="option in without_read_reason.options">
+							<label><input type="radio" :name="without_read_reason.input_name" v-model="without_read_reason.value" :value="option" required="">{{option}}</label>
+						</template>
+					</div>
+				</div>
+				<div v-if="without_read_reason.value=='其他' && read_school.value=='就學過，但中斷'" class="col-md-6 mb-6">
+			      <label>請詳細填寫中斷原因</label>
+			    	<input :name="without_read_reason.input_name" type="text" class="form-control" required="">
+			    </div>
+			</div>
+
+			<div id="question_4">
+				<div class="row">
+					<h2>四、家長主要在意問題:(必選，可複選)</h2>
+				</div>
+				<hr class="mb-4">
+				<template v-for="(question, index) in questions">
+					<h4>{{question.title}}</h4>
+					<template v-for="option in question.options">
+						<label><input type="checkbox" :name="question.input_name" :disabled="question.disabled && option!='無'" v-model="question.hasSelected" @click="checkOption($event, index)" :value="option" required="">{{option}}</label>
+					</template>
+				</template>
+			</div>
+			<input type="submit" name="">
+		</form>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script type="text/javascript" src="../../js/basicQuestion.js"></script>
+</body>
+</html>
