@@ -183,8 +183,8 @@
 					<template v-for="content in questions[1].contents">
 						<span>{{content.type}}</span>
 						<div class="col-md-2 mb-4">
-							<select class="custom-select d-block w-100" required="">
-		            <option v-for="option in content.options" :value="option" v-model="option">{{option}}</option>
+							<select class="custom-select d-block w-100" v-model="content.value" required="">
+		            <option v-for="option in content.options" :value="option">{{option}}</option>
 		          </select>
 						</div>
 					</template>

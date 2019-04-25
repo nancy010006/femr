@@ -264,11 +264,20 @@ var question_6 = new Vue({
 					},
 				],
 			},
-		]
+		],
 	},
 	computed:{
+		// 算排行只要取哥哥姊姊的數量+1即可
 		rank:function(){
-			return this.questions[1].contents[0].value;
+			borther = parseInt(this.questions[1].contents[0].value.slice(0,-1));
+			sister = parseInt(this.questions[1].contents[2].value.slice(0,-1));
+			if(!borther && !sister)
+				return 1;
+			if(!sister)
+				sister = 0;
+			if(!borther)
+				borther = 0;
+			return borther+sister+1;
 		}
 	}
 })
