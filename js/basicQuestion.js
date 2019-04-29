@@ -66,7 +66,10 @@ var question_2 = new Vue({
 	},
 	methods:{
 		isforsetCare: function(event){
-			console.log(event.target.value);
+			if(event.target.value == '寄養媽媽')
+				question_6.isforsetCare = 1;
+			else
+				question_6.isforsetCare = 0;
 		}
 	}
 })
@@ -227,13 +230,14 @@ var question_5 = new Vue({
 })
 
 Vue.component('question_radio', {
-	props: ['prop'],
- 	template: '<div class="col-md-4 mb-6"><label><input type="radio" name="test" value="a" required="">{{prop}}</label></div>'
+	props: ['prop','input_name'],
+ 	template: '<div class="col-md-4 mb-6"><label><input type="radio" :name="input_name" :value="prop" required="">{{prop}}</label></div>'
 })
 // 创建根实例
 var question_6 = new Vue({
  	el: '#question_6',
 	data:{
+		isforsetCare : 0,
 		questions:[
 			{
 				title:'1.親生父母婚姻狀況:(單選)',
@@ -265,6 +269,128 @@ var question_6 = new Vue({
 				],
 			},
 		],
+		father_question:[
+			{
+				title:'姓名',
+				input_name:'father_name',
+				value:''
+			},
+			{
+				title:'出生年月日',
+				input_name:'father_birthday',
+				value:''
+			},
+			{
+				title:'教育程度',
+				input_name:'father_education',
+				options:['未受教育', '小學', '初中', '專科', '高中', '大學', '碩士', '博士', ],
+			},
+			{
+				title:'職業',
+				options:[
+					'1礦業/砂石業 ',
+					'2製造業 ',
+					'3水電燃氣業 ',
+					'4營造業 ',
+					'5批發/零售 ',
+					'6住宿/餐飲 ',
+					'7運輸/倉儲/通信 ',
+					'8金融/保險 ',
+					'9不動產/租賃 ',
+					'10軍/警/消 ',
+					'11公教人員 ',
+					'12專業技術服務 ',
+					'13醫療服務 ',
+					'14休閒服務 ',
+					'15其它/家管 ',
+					'16學生 ',
+					'17教育機構 ',
+					'18農林漁牧業 ',
+					'19律師、會計師、記帳士、公證人或代書 ',
+					'20宗教/慈善/公益團體、基金會 ',
+					'21投資(顧問)公司 ',
+					'22銀樓、珠寶商、藝術品或古董買賣/拍賣商 ',
+					'23大宗物資交易商(如：穀物、油品或煤礦等) ',
+					'24當鋪、貨幣兌換商、虛擬貨幣商、金流(如：西聯匯款、第三方支付)或地下資金融通業者 ',
+					'25賭場或博弈業(網路/實體) ',
+					'26八大特種行業 ',
+					'27國防工業',
+					'其他',
+				],
+				input_name:'father_career',
+				value:''
+			},{
+				title:'國籍',
+				options:[
+					'本國籍原住民',
+					'本國及非原住民',
+					'其他',
+				],
+				input_name:'father_country',
+				value:''
+			},
+		],
+		mother_question:[
+			{
+				title:'姓名',
+				input_name:'mother_name',
+				value:''
+			},
+			{
+				title:'出生年月日',
+				input_name:'mother_birthday',
+				value:''
+			},
+			{
+				title:'教育程度',
+				input_name:'mother_education',
+				options:['未受教育', '小學', '初中', '專科', '高中', '大學', '碩士', '博士', ],
+			},
+			{
+				title:'職業',
+				options:[
+					'1礦業/砂石業 ',
+					'2製造業 ',
+					'3水電燃氣業 ',
+					'4營造業 ',
+					'5批發/零售 ',
+					'6住宿/餐飲 ',
+					'7運輸/倉儲/通信 ',
+					'8金融/保險 ',
+					'9不動產/租賃 ',
+					'10軍/警/消 ',
+					'11公教人員 ',
+					'12專業技術服務 ',
+					'13醫療服務 ',
+					'14休閒服務 ',
+					'15其它/家管 ',
+					'16學生 ',
+					'17教育機構 ',
+					'18農林漁牧業 ',
+					'19律師、會計師、記帳士、公證人或代書 ',
+					'20宗教/慈善/公益團體、基金會 ',
+					'21投資(顧問)公司 ',
+					'22銀樓、珠寶商、藝術品或古董買賣/拍賣商 ',
+					'23大宗物資交易商(如：穀物、油品或煤礦等) ',
+					'24當鋪、貨幣兌換商、虛擬貨幣商、金流(如：西聯匯款、第三方支付)或地下資金融通業者 ',
+					'25賭場或博弈業(網路/實體) ',
+					'26八大特種行業 ',
+					'27國防工業',
+					'其他',
+				],
+				input_name:'mother_career',
+				value:''
+			},{
+				title:'國籍',
+				options:[
+					'本國籍原住民',
+					'本國及非原住民',
+					'其他',
+				],
+				input_name:'mother_country',
+				value:''
+			},
+		]
 	},
 	computed:{
 		// 算排行只要取哥哥姊姊的數量+1即可
