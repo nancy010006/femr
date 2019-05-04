@@ -9,6 +9,7 @@ var submit_button = new Vue({
 			for (var i = questions.length - 1; i >= 0; i--) {
 				if(questions[i].hasSelected.length==0){
 					questions[i].checked = true;
+					alert('有些選項沒有填寫，請重新確認');
 					event.preventDefault();
 				}else{
 					questions[i].checked = false;
@@ -18,6 +19,7 @@ var submit_button = new Vue({
 			for (var i = questions.length - 1; i >= 0; i--) {
 				if(questions[i].hasSelected.length==0){
 					questions[i].checked = true;
+					alert('有些選項沒有填寫，請重新確認');
 					event.preventDefault();
 				}else{
 					questions[i].checked = false;
@@ -242,6 +244,7 @@ var question_6 = new Vue({
 			{
 				title:'1.親生父母婚姻狀況:(單選)',
 				options:['結婚同居', '結婚分居', '未婚同居', '未婚分居', '離婚', '喪偶',],
+				input_name:'family_married',
 			},
 			{
 				title:'2.手足人數',
@@ -268,21 +271,45 @@ var question_6 = new Vue({
 					},
 				],
 			},
+			{
+				title:'5.目前居住家庭型態',
+				options:['小家庭', '單親家庭', '寄養家庭', '大家庭',],
+				input_name:'family_family',
+			},
 		],
-		father_question:[
+		parent_question:[
 			{
 				title:'姓名',
-				input_name:'father_name',
-				value:''
+				father:{
+					input_name:'father_name',
+					value:'',
+				},
+				mother:{
+					input_name:'mother_name',
+					value:'',
+				}
 			},
 			{
 				title:'出生年月日',
-				input_name:'father_birthday',
-				value:''
+				father:{
+					input_name:'father_birthday',
+					value:'',
+				},
+				mother:{
+					input_name:'mother_birthday',
+					value:'',
+				}
 			},
 			{
 				title:'教育程度',
-				input_name:'father_education',
+				father:{
+					input_name:'father_education',
+					value:'',
+				},
+				mother:{
+					input_name:'mother_education',
+					value:'',
+				},
 				options:['未受教育', '小學', '初中', '專科', '高中', '大學', '碩士', '博士', ],
 			},
 			{
@@ -317,80 +344,32 @@ var question_6 = new Vue({
 					'27國防工業',
 					'其他',
 				],
-				input_name:'father_career',
-				value:''
-			},{
+				father:{
+					input_name:'father_career',
+					value:'',
+				},
+				mother:{
+					input_name:'mother_career',
+					value:'',
+				},
+			},
+			{
 				title:'國籍',
 				options:[
 					'本國籍原住民',
 					'本國及非原住民',
 					'其他',
 				],
-				input_name:'father_country',
-				value:''
+				father:{
+					input_name:'father_country',
+					value:'',
+				},
+				mother:{
+					input_name:'mother_country',
+					value:'',
+				},
 			},
 		],
-		mother_question:[
-			{
-				title:'姓名',
-				input_name:'mother_name',
-				value:''
-			},
-			{
-				title:'出生年月日',
-				input_name:'mother_birthday',
-				value:''
-			},
-			{
-				title:'教育程度',
-				input_name:'mother_education',
-				options:['未受教育', '小學', '初中', '專科', '高中', '大學', '碩士', '博士', ],
-			},
-			{
-				title:'職業',
-				options:[
-					'1礦業/砂石業 ',
-					'2製造業 ',
-					'3水電燃氣業 ',
-					'4營造業 ',
-					'5批發/零售 ',
-					'6住宿/餐飲 ',
-					'7運輸/倉儲/通信 ',
-					'8金融/保險 ',
-					'9不動產/租賃 ',
-					'10軍/警/消 ',
-					'11公教人員 ',
-					'12專業技術服務 ',
-					'13醫療服務 ',
-					'14休閒服務 ',
-					'15其它/家管 ',
-					'16學生 ',
-					'17教育機構 ',
-					'18農林漁牧業 ',
-					'19律師、會計師、記帳士、公證人或代書 ',
-					'20宗教/慈善/公益團體、基金會 ',
-					'21投資(顧問)公司 ',
-					'22銀樓、珠寶商、藝術品或古董買賣/拍賣商 ',
-					'23大宗物資交易商(如：穀物、油品或煤礦等) ',
-					'24當鋪、貨幣兌換商、虛擬貨幣商、金流(如：西聯匯款、第三方支付)或地下資金融通業者 ',
-					'25賭場或博弈業(網路/實體) ',
-					'26八大特種行業 ',
-					'27國防工業',
-					'其他',
-				],
-				input_name:'mother_career',
-				value:''
-			},{
-				title:'國籍',
-				options:[
-					'本國籍原住民',
-					'本國及非原住民',
-					'其他',
-				],
-				input_name:'mother_country',
-				value:''
-			},
-		]
 	},
 	computed:{
 		// 算排行只要取哥哥姊姊的數量+1即可
@@ -407,3 +386,53 @@ var question_6 = new Vue({
 		}
 	}
 })
+
+var question_7 = new Vue({
+	el:'#question_7',
+	data:{
+		heal_age:{
+			title:'開始療育年齡',
+			year_options:[0,1,2,3,4,5,6],
+			month_options:[0,1,2,3,4,5,6,7,8,9,10,11],
+			year_value:'',
+			month_value:'',
+		},
+		heal_status:{
+			title:'療育現況',
+			options:['未曾療育過', '療育過但中斷', '療育持續中',],
+			value:'',
+			input_name:'heal_status',
+			others:{
+				options:['3個月以下','3~6個月','6個月~1年','1年~2年','2年以上'],
+				questions:[
+					{
+						title:'物理治療持續時間',
+						value:'',
+					},
+					{
+						title:'職能治療持續時間',
+						value:'',
+					},
+					{
+						title:'語言治療持續時間',
+						value:'',
+					},
+				],
+			},
+		},
+		heal_type:{
+			title:'曾接受的療育種類',
+			options:['物理治療', '職能治療', '語言治療', '認知訓練', '機構早療課程','心理治療','藝術治療','音樂治療','馬術治療','其他'],
+			input_name : 'heal_type',
+			hasSelected:[],
+			other_value:'',
+		},
+		heal_place:{
+			title:'目前療育(上課)地點',
+			options:['亞東醫院', '其他醫院', '復健診所', '日托班', '到宅服務', '其他',],
+			input_name : 'heal_place',
+			hasSelected:[],
+			other_value:'',
+		},
+	}
+});
