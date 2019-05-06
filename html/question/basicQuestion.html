@@ -404,10 +404,13 @@
                     </div>
                     <div v-if="question.type=='select'">
                         <div class="row">
-                            <div class="col-md-12 mb-12">
+                            <div class="col-md-8 mb-8">
                                 <select v-model="question.value" class="custom-select d-block w-100" required="">
                                     <option v-for="option in question.options" :value="option">{{option}}</option>
                                 </select>
+                            </div>
+                            <div v-if="question.tail_unit!=''">
+                            	{{question.tail_unit}}
                             </div>
                         </div>
                         <div v-if="question.value=='其他'" class="row">

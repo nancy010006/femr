@@ -642,20 +642,58 @@ var question_8 = new Vue({
             	main_title:'C.發展史',
                 title: '頸部控制',
                 type: 'select',
-                options: [
-                    '',
-                    1,
-                    2,
-                    3,
-                    4,
-                    5,
-                    6,
-                    7,
-                    8,
-                    9,
-                    10,
-                ],
+                options: getSelectNum(36,true),
                 value: '',
+                tail_unit:'個月',
+            },
+            {
+                title: '翻身',
+                type: 'select',
+                options: getSelectNum(36,true),
+                value: '',
+                tail_unit:'個月',
+            },
+            {
+                title: '坐',
+                type: 'select',
+                options: getSelectNum(36,true),
+                value: '',
+                tail_unit:'個月',
+            },
+            {
+                title: '爬',
+                type: 'select',
+                options: getSelectNum(36,true),
+                value: '',
+                tail_unit:'個月',
+            },
+            {
+                title: '走',
+                type: 'select',
+                options: getSelectNum(48,true),
+                value: '',
+                tail_unit:'個月',
+            },
+            {
+                title: '伸手抓物',
+                type: 'select',
+                options: getSelectNum(24,true),
+                value: '',
+                tail_unit:'個月',
+            },
+            {
+                title: '塗鴉',
+                type: 'select',
+                options: getSelectNum(48,true),
+                value: '',
+                tail_unit:'個月',
+            },
+            {
+                title: '第一個有意義單字',
+                type: 'select',
+                options: getSelectNum(48,true),
+                value: '',
+                tail_unit:'個月',
             },
         ],
     },
@@ -672,3 +710,13 @@ var question_8 = new Vue({
         }
     }
 });
+function getSelectNum(last,unknown){
+	let init = 1;
+	let result = [''];
+	for (var i = init; i < last; i++) {
+		result.push(i);
+	}
+	if(unknown)
+		result.push('不清楚');
+	return result;
+}
