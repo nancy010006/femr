@@ -427,7 +427,6 @@ var question_7 = new Vue({
         },
     }
 });
-
 var question_8 = new Vue({
     el: '#question_8',
     data: {
@@ -642,49 +641,49 @@ var question_8 = new Vue({
             	main_title:'C.發展史',
                 title: '頸部控制',
                 type: 'select',
-                options: getSelectNum(36,true),
+                options: getSelectNum(1,36,true),
                 value: '',
                 tail_unit:'個月',
             },
             {
                 title: '翻身',
                 type: 'select',
-                options: getSelectNum(36,true),
+                options: getSelectNum(1,36,true),
                 value: '',
                 tail_unit:'個月',
             },
             {
                 title: '坐',
                 type: 'select',
-                options: getSelectNum(36,true),
+                options: getSelectNum(1,36,true),
                 value: '',
                 tail_unit:'個月',
             },
             {
                 title: '爬',
                 type: 'select',
-                options: getSelectNum(36,true),
+                options: getSelectNum(1,36,true),
                 value: '',
                 tail_unit:'個月',
             },
             {
                 title: '走',
                 type: 'select',
-                options: getSelectNum(48,true),
+                options: getSelectNum(1,48,true),
                 value: '',
                 tail_unit:'個月',
             },
             {
                 title: '伸手抓物',
                 type: 'select',
-                options: getSelectNum(24,true),
+                options: getSelectNum(1,24,true),
                 value: '',
                 tail_unit:'個月',
             },
             {
                 title: '塗鴉',
                 type: 'select',
-                options: getSelectNum(48,true),
+                options: getSelectNum(1,48,true),
                 value: '',
                 tail_unit:'個月',
             },
@@ -710,10 +709,9 @@ var question_8 = new Vue({
         }
     }
 });
-function getSelectNum(last,unknown){
-	let init = 1;
+function getSelectNum(init,last,unknown){
 	let result = [''];
-	for (var i = init; i < last; i++) {
+	for (var i = init; i <= last; i++) {
 		result.push(i);
 	}
 	if(unknown)
