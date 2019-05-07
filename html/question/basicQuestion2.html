@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" NAME="ROBOTS" CONTENT="NOARCHIVE" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style type="text/css">
+    body {
+        padding-top: 2rem;
+    }
+
+    input[type=checkbox] {
+        height: 30px;
+        width: 30px;
+    }
+
+    input[type=radio] {
+        height: 30px;
+        width: 30px;
+    }
+
+    label {
+        font-size: 30px;
+    }
+
+    h2 {
+        font-size: 45px;
+    }
+
+    h4 {
+        font-size: 35px;
+    }
+
+    h5 {
+        font-size: 30px;
+    }
+    </style>
+    <title></title>
+</head>
+<body>
+    <div class="container">
+        <div id="question_2">
+            <div class="row">
+                <h2>{{head}}</h2>
+            </div>
+            <hr class="mb-4">
+            <div class="row">
+                <div v-for="question in questions" :class="question.class">
+                    <input-text v-if="question.type=='text'" :title="question.title" v-model="question.value"></input-text>
+                    <input-select v-if="question.type=='select'" :title="question.title" v-model="question.value" :options="question.options"></input-select>
+                    <div v-if="question.type=='radio'">
+                        <label>{{question.title}}</label>
+                        <div class="row">
+                            <template v-for="option in question.options">
+                                <div class="col-md-4 mb-6"><label><input type="radio" :value="option" v-model="question.value" required="">{{option}}</label></div>
+                            </template>
+                        </div>
+                    </div>
+                    <div v-if="question.value=='其他'">
+                        <input-other :title="question.title" v-model="question.other_value"></input-other>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="question_3">
+            {{everSchool}}
+            <div class="row">
+                <h2>{{head}}</h2>
+            </div>
+            <hr class="mb-4">
+            <div class="row">
+                <div v-for="question in questions" :class="question.class">
+                    <input-text v-if="question.type=='text'" :title="question.title" v-model="question.value"></input-text>
+                    <input-select v-if="question.type=='select'" :title="question.title" v-model="question.value" :options="question.options"></input-select>
+                    <div v-if="question.type=='radio'">
+                        <label>{{question.title}}</label>
+                        <div class="row">
+                            <template v-for="option in question.options">
+                                <div class="col-md-4 mb-6"><label><input type="radio" :value="option" v-model="question.value" required="">{{option}}</label></div>
+                            </template>
+                        </div>
+                    </div>
+                    <div v-if="question.value=='其他'">
+                        <input-other :title="question.title" v-model="question.other_value"></input-other>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="question_4">
+            <div class="row">
+                <h2>{{head}}</h2>
+            </div>
+            <hr class="mb-4">
+            <div class="row">
+                <div v-for="(question,index) in questions" :class="question.class">
+                    <div v-if="question.type=='checkbox'">
+                        <label>{{question.title}}</label>
+                        <div class="row">
+                            <template v-for="option in question.options">
+                                <div class="col-md-4 mb-6">
+                                    <label>
+                                        <input type="checkbox" :disabled="question.disabled && option!='無'" :value="option" v-model="question.value" @click="checkOption($event, index)" required="">{{option}}
+                                    </label>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div v-if="question.value=='其他'">
+                        <input-other :title="question.title" v-model="question.other_value"></input-other>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="question_5">
+            <div class="row">
+                <h2>{{head}}</h2>
+            </div>
+            <hr class="mb-4">
+            <div class="row">
+                <div v-for="(question,index) in questions" :class="question.class">
+                    <div v-if="question.type=='checkbox'">
+                        <label>{{question.title}}</label>
+                        <div class="row">
+                            <template v-for="option in question.options">
+                                <div class="col-md-4 mb-6">
+                                    <label>
+                                        <input type="checkbox" :disabled="question.disabled && option!='無'" :value="option" v-model="question.value" @click="checkOption($event, index)" required="">{{option}}
+                                    </label>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div v-if="question.value=='其他'">
+                        <input-other :title="question.title" v-model="question.other_value"></input-other>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="question_6">
+            <div class="row">
+                <h2>{{head}}</h2>
+            </div>
+            <hr class="mb-4">
+            <div class="row">
+                <div v-for="question in questions" :class="question.class">
+                    <input-text v-if="question.type=='text'" :title="question.title" v-model="question.value"></input-text>
+                    <input-select v-if="question.type=='select'" :title="question.title" v-model="question.value" :options="question.options"></input-select>
+                    <div v-if="question.type=='radio'">
+                        <label>{{question.title}}</label>
+                        <div class="row">
+                            <template v-for="option in question.options">
+                                <div class="col-md-4 mb-6"><label><input type="radio" :value="option" v-model="question.value" required="">{{option}}</label></div>
+                            </template>
+                        </div>
+                    </div>
+                    <div v-if="question.value=='其他'">
+                        <input-other :title="question.title" v-model="question.other_value"></input-other>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="question_7">
+            {{ageUnder1}}
+            {{healStatus}}
+            <div class="row">
+                <h2>{{head}}</h2>
+            </div>
+            <hr class="mb-4">
+            <div class="row">
+                <div v-for="question in questions" :class="question.class">
+                    <input-text v-if="question.type=='text'" :title="question.title" v-model="question.value"></input-text>
+                    <input-select v-if="question.type=='select'" :title="question.title" v-model="question.value" :options="question.options"></input-select>
+                    <div v-if="question.type=='radio'">
+                        <label>{{question.title}}</label>
+                        <div class="row">
+                            <template v-for="option in question.options">
+                                <div class="col-md-4 mb-6"><label><input type="radio" :value="option" v-model="question.value" required="">{{option}}</label></div>
+                            </template>
+                        </div>
+                    </div>
+                    <div v-if="question.type=='checkbox'">
+                        <label>{{question.title}}</label>
+                        <div class="row">
+                            <template v-for="option in question.options">
+                                <div class="col-md-4 mb-6">
+                                    <label>
+                                        <input type="checkbox" :disabled="question.disabled && option!='無'" :value="option" v-model="question.value" required="">{{option}}
+                                    </label>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div v-if="question.value.includes('其他')">
+                        <input-other :title="question.title" v-model="question.other_value"></input-other>
+                    </div>
+                </div>
+            </div>
+            <!-- <template v-for="heal_place in questions[7].value">
+                <div>
+                    <label>{{heal_place}}</label>
+                    <div class="row">
+                        <span>物理治療每週</span>
+                        <div class="col-md-3 mb-3">
+                            <input type="text" class="form-control" required="">
+                        </div>
+                        <span>次，共</span>
+                        <div class="col-md-3 mb-3">
+                            <input type="text" placeholder="以半小時為計時單位" class="form-control" required="">
+                        </div>
+                        <span>分鐘</span>
+                    </div>
+                    <div class="row">
+                        <span>職能治療每週</span>
+                        <div class="col-md-3 mb-3">
+                            <input type="text" class="form-control" required="">
+                        </div>
+                        <span>次，共</span>
+                        <div class="col-md-3 mb-3">
+                            <input type="text" placeholder="以半小時為計時單位" class="form-control" required="">
+                        </div>
+                        <span>分鐘</span>
+                    </div>
+                    <div class="row">
+                        <span>語言治療每週</span>
+                        <div class="col-md-3 mb-3">
+                            <input type="text" class="form-control" required="">
+                        </div>
+                        <span>次，共</span>
+                        <div class="col-md-3 mb-3">
+                            <input type="text" placeholder="以半小時為計時單位" class="form-control" required="">
+                        </div>
+                        <span>分鐘</span>
+                    </div>
+                </div>
+            </template> -->
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script type="text/javascript" src="../../js/basicQuestion2.js"></script>
+</body>
+
+</html>
