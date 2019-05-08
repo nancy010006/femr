@@ -1,18 +1,31 @@
 // text
 Vue.component('input-text',{
     props:['title','value'],
-    template:'<div><label>{{title}}</label><input type="text" class="form-control" v-bind:value="value" v-on:input="$emit(\'input\', $event.target.value)" required=""></div>',
+    template:'<div><h4>{{title}}</h4><input type="text" class="form-control" v-bind:value="value" v-on:input="$emit(\'input\', $event.target.value)" required=""></div>',
 })
 //select
 Vue.component('input-select',{
     props:['title','value','options','unit'],
-    template:'<div><label>{{title}}</label><select v-bind:value="value" v-on:input="$emit(\'input\', $event.target.value)" class="custom-select d-block w-100" required=""><option v-for="option in options" :value="option">{{option}}</option></select></div>',
+    template:'<div><h4>{{title}}</h4><select v-bind:value="value" v-on:input="$emit(\'input\', $event.target.value)" class="custom-select d-block w-100" required=""><option v-for="option in options" :value="option">{{option}}</option></select></div>',
 })
 // other_value
 Vue.component('input-other',{
     props:['title','value'],
-    template:'<div><label>請詳細填寫{{title}}</label><input type="text" class="form-control" v-bind:value="value" v-on:input="$emit(\'input\', $event.target.value)" required=""></div>',
+    template:'<div><h4>請詳細填寫{{title}}</h4><input type="text" class="form-control" v-bind:value="value" v-on:input="$emit(\'input\', $event.target.value)" required=""></div>',
 })
+var question_1 = new Vue({
+    el:'#question_1',
+    data:{
+        questions:[
+            {
+                type: 'text',
+                title: '病歷號碼',
+                value: '',
+                class:'col-md-6 mb-6',
+            }
+        ],
+    }
+});
 var question_2 = new Vue({
     el:'#question_2',
     data:{
@@ -53,7 +66,20 @@ var question_2 = new Vue({
                 class:'col-md-12 mb-12',
             },
         ],
-    }
+    },
+    computed: {
+        isForest: function() {
+            if(this.questions[3].value == '寄養媽媽'){
+                for(i in question_6.questions){
+                    if(i == 5)
+                        continue;
+                    question_6.questions[i].type = 'disabled';
+                    question_6.questions[i].value = '';
+                }
+            }
+            return;
+        }
+    },
 });
 var question_3 = new Vue({
     el:'#question_3',
@@ -277,6 +303,14 @@ var question_6 = new Vue({
                 class:'col-md-6 mb-6',
             },
             {
+                type: 'radio',
+                title: '5.目前居住家庭型態',
+                options: ['小家庭', '單親家庭', '寄養家庭', '大家庭', ],
+                value: '',
+                other_value: '',
+                class:'col-md-12 mb-12',
+            },
+            {
                 type: 'text',
                 title: '父親-姓名',
                 value: '',
@@ -336,7 +370,7 @@ var question_6 = new Vue({
             {
                 type: 'radio',
                 title: '父親-國籍',
-                options: ['本國籍原住民', '本國及非原住民', '其他',],
+                options: ['本國籍原住民', '本國籍非原住民', '其他',],
                 value: '',
                 other_value: '',
                 class:'col-md-12 mb-12',
@@ -401,7 +435,7 @@ var question_6 = new Vue({
             {
                 type: 'radio',
                 title: '母親-國籍',
-                options: ['本國籍原住民', '本國及非原住民', '其他',],
+                options: ['本國籍原住民', '本國籍非原住民', '其他',],
                 value: '',
                 other_value: '',
                 class:'col-md-12 mb-12',
@@ -511,23 +545,291 @@ var question_7 = new Vue({
         },
         healPlace:function(){
             heal_places = this.questions[7].value;
-            if(heal_places)
-                for(heal_place in heal_places){
-                    let detail = {
-                        title:heal_place+'物理治療每周幾次',
-                        type:'text',
-                        value:[],
-                        class:'col-md-12 mb-12'
+            if(heal_places.length>0){
+                this.questions.splice(8,this.questions.length);
+                console.log(this.questions);
+                for(i in heal_places){
+                    const names = ['物理治療每周幾次','職能治療每周幾次','語言治療每周幾次'];
+                    for(index in names){
+                        let detail = 
+                        {
+                            title:heal_places[i]+names[index],
+                            type:'text',
+                            value:[],
+                            class:'col-md-6 mb-6'
+                        }
+                        this.questions.push(detail);
+                        let time = 
+                        {
+                            title:'共幾分鐘，以半小時為單位',
+                            type:'text',
+                            value:[],
+                            class:'col-md-6 mb-6'
+                        }
+                        this.questions.push(time);
                     }
-                    this.questions.push(detail);
                 }
+            }
         }
     },
 });
-function getSelectNum(from,end,unit=''){
+
+var question_8 = new Vue({
+    el:'#question_8',
+    data:{
+        head:'八、發展及疾病史',
+        questions:[
+            {
+                title: '家族史',
+                type: 'checkbox',
+                options: ['無',
+                    '有',
+                    '智能障礙',
+                    '自閉症',
+                    '注意力不足過動症',
+                    '聽障',
+                    '構音異常',
+                    '口吃',
+                    '精神病',
+                    '染色體異常',
+                    '癲癇',
+                    '學習困難',
+                    '講話慢',
+                    '異位性皮膚炎',
+                    '過敏性鼻炎',
+                    '氣喘',
+                ],
+                value: [],
+                class:'col-md-12 mb-12',
+            },
+            {
+                title: '生理疾病',
+                type: 'checkbox',
+                options: [
+                    '無',
+                    '感染',
+                    '蛋白尿',
+                    '癲癇',
+                    '高血壓',
+                    '水腫',
+                    '糖尿病',
+                    '甲狀腺疾病',
+                    '其他內分泌疾病',
+                    '其他',
+                ],
+                value: [],
+                class:'col-md-12 mb-12',
+            },
+            {
+                type: 'select',
+                title: '母親孕期用藥狀況',
+                options: [
+                    '',
+                    '無',
+                    '精神科用藥',
+                    '神經科用藥',
+                    '內分泌用藥',
+                    '心血管用藥',
+                    '其他',
+                ],
+                value: '',
+                other_value: '',
+                class:'col-md-12 mb-12',
+            },
+            {
+                type: 'select',
+                title: '母親物質濫用狀況',
+                options: [
+                    '',
+                    '無',
+                    '酒精',
+                    '抽菸',
+                    '毒品',
+                    '其他',
+                ],
+                value: '',
+                other_value: '',
+                class:'col-md-12 mb-12',
+            },
+            {
+                type: 'select',
+                title: '懷孕次數',
+                options: getSelectNum(1,10),
+                value: '',
+                class:'col-md-12 mb-12',
+            },
+            {
+                type: 'select',
+                title: '活產次數',
+                options: getSelectNum(1,10),
+                value: '',
+                class:'col-md-12 mb-12',
+            },
+            {
+                title: '流產',
+                type: 'radio',
+                options: [
+                    '無',
+                    '自然流產',
+                    '人工流產',
+                ],
+                value: [],
+                class:'col-md-12 mb-12',
+            },
+            {
+                title: '產程',
+                type: 'checkbox',
+                options: [
+                    '自然產',
+                    '緊急剖腹',
+                    '預期剖腹',
+                    '真空吸引',
+                    '生產時窒息',
+                    '胎兒窘迫症',
+                    '胎兒急救',
+                    '出生時臍帶繞頸',
+                ],
+                value: [],
+                class:'col-md-12 mb-12',
+            },
+            {
+                title: '新生兒篩檢-血片檢查',
+                type: 'radio',
+                options: [
+                    '正常',
+                    '異常',
+                ],
+                value: '',
+                class:'col-md-12 mb-12',
+            },
+            {
+                title: '新生兒篩檢-聽力檢查',
+                type: 'radio',
+                options: [
+                    '正常',
+                    '異常',
+                ],
+                value: '',
+                class:'col-md-12 mb-12',
+            },
+            {
+                title: '新生期及幼兒期生理異常',
+                type: 'checkbox',
+                options: [
+                    '無',
+                    '曾住過加護病房',
+                    '顱內出血',
+                    '呼吸暫停',
+                    '吸吮不佳',
+                    '插鼻胃管',
+                    '曾禁食',
+                    '保溫箱',
+                    '曾手術',
+                    '抽筋',
+                    '感染',
+                    '黃膽',
+                    '換血',
+                ],
+                value: [],
+                class:'col-md-12 mb-12',
+            },
+            {
+                title: '疾病史',
+                type: 'checkbox',
+                options: [
+                    '無',
+                    '癲癇',
+                    '腦部外傷',
+                    '其他疾病',
+                    '先天性心臟病',
+                    '早產兒',
+                    '白質軟化',
+                    '慢性呼吸疾病',
+                    '妥瑞症',
+                    '異位性皮膚炎',
+                    '過敏性鼻炎',
+                    '氣喘',
+                ],
+                value: [],
+                class:'col-md-12 mb-12',
+            },
+            {
+                title: '頸部控制',
+                type: 'select',
+                options: getSelectNum(0,36,'個月',true),
+                value: '',
+                class:'col-md-12 mb-12',
+            },
+            {
+                title: '翻身',
+                type: 'select',
+                options: getSelectNum(0,36,'個月',true),
+                value: '',
+                class:'col-md-12 mb-12',
+            },
+            {
+                title: '坐',
+                type: 'select',
+                options: getSelectNum(0,36,'個月',true),
+                value: '',
+                class:'col-md-12 mb-12',
+            },
+            {
+                title: '爬',
+                type: 'select',
+                options: getSelectNum(0,36,'個月',true),
+                value: '',
+                class:'col-md-12 mb-12',
+            },
+            {
+                title: '走',
+                type: 'select',
+                options: getSelectNum(0,48,'個月',true),
+                value: '',
+                class:'col-md-12 mb-12',
+            },
+            {
+                title: '伸手抓物',
+                type: 'select',
+                options: getSelectNum(0,24,'個月',true),
+                value: '',
+                class:'col-md-12 mb-12',
+            },
+            {
+                title: '塗鴉',
+                type: 'select',
+                options: getSelectNum(0,48,'個月',true),
+                value: '',
+                class:'col-md-12 mb-12',
+            },
+            {
+                title: '第一個有意義單字',
+                type: 'select',
+                options: getSelectNum(0,48,'個月',true),
+                value: '',
+                class:'col-md-12 mb-12',
+            },
+        ],
+    },
+    methods: {
+        checkOption: function(event, $index) {
+            option_value = event.target.value;
+            option_status = event.target.checked;
+            if (option_value === '無' && option_status === true) {
+                this.questions[$index].value = ['無'];
+                this.questions[$index].disabled = true;
+            } else if (option_value === '無' && option_status === false) {
+                this.questions[$index].disabled = false;
+            }
+        }
+    }
+});
+function getSelectNum(from,end,unit='',unknown=''){
     result = [];
     for(i = from; i <= end; i++){
         result.push(i+unit);
     }
+    if(unknown)
+        result.push('不清楚');
     return result;
 }

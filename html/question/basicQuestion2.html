@@ -25,10 +25,12 @@
 
     h2 {
         font-size: 45px;
+        font-weight:bold;
     }
 
     h4 {
-        font-size: 35px;
+        font-size: 30px;
+        font-weight:bold;
     }
 
     h5 {
@@ -39,7 +41,16 @@
 </head>
 <body>
     <div class="container">
+        <div id="question_1">
+            <div class="row">
+                <div v-for="question in questions" :class="question.class">
+                    <input-text v-if="question.type=='text'" :title="question.title" v-model="question.value"></input-text>
+                </div>
+            </div>
+        </div>
+
         <div id="question_2">
+            {{isForest}}
             <div class="row">
                 <h2>{{head}}</h2>
             </div>
@@ -49,7 +60,7 @@
                     <input-text v-if="question.type=='text'" :title="question.title" v-model="question.value"></input-text>
                     <input-select v-if="question.type=='select'" :title="question.title" v-model="question.value" :options="question.options"></input-select>
                     <div v-if="question.type=='radio'">
-                        <label>{{question.title}}</label>
+                        <h4>{{question.title}}</h4>
                         <div class="row">
                             <template v-for="option in question.options">
                                 <div class="col-md-4 mb-6"><label><input type="radio" :value="option" v-model="question.value" required="">{{option}}</label></div>
@@ -74,7 +85,7 @@
                     <input-text v-if="question.type=='text'" :title="question.title" v-model="question.value"></input-text>
                     <input-select v-if="question.type=='select'" :title="question.title" v-model="question.value" :options="question.options"></input-select>
                     <div v-if="question.type=='radio'">
-                        <label>{{question.title}}</label>
+                        <h4>{{question.title}}</h4>
                         <div class="row">
                             <template v-for="option in question.options">
                                 <div class="col-md-4 mb-6"><label><input type="radio" :value="option" v-model="question.value" required="">{{option}}</label></div>
@@ -96,7 +107,7 @@
             <div class="row">
                 <div v-for="(question,index) in questions" :class="question.class">
                     <div v-if="question.type=='checkbox'">
-                        <label>{{question.title}}</label>
+                        <h4>{{question.title}}</h4>
                         <div class="row">
                             <template v-for="option in question.options">
                                 <div class="col-md-4 mb-6">
@@ -122,7 +133,7 @@
             <div class="row">
                 <div v-for="(question,index) in questions" :class="question.class">
                     <div v-if="question.type=='checkbox'">
-                        <label>{{question.title}}</label>
+                        <h4>{{question.title}}</h4>
                         <div class="row">
                             <template v-for="option in question.options">
                                 <div class="col-md-4 mb-6">
@@ -150,7 +161,7 @@
                     <input-text v-if="question.type=='text'" :title="question.title" v-model="question.value"></input-text>
                     <input-select v-if="question.type=='select'" :title="question.title" v-model="question.value" :options="question.options"></input-select>
                     <div v-if="question.type=='radio'">
-                        <label>{{question.title}}</label>
+                        <h4>{{question.title}}</h4>
                         <div class="row">
                             <template v-for="option in question.options">
                                 <div class="col-md-4 mb-6"><label><input type="radio" :value="option" v-model="question.value" required="">{{option}}</label></div>
@@ -167,6 +178,7 @@
         <div id="question_7">
             {{ageUnder1}}
             {{healStatus}}
+            {{healPlace}}
             <div class="row">
                 <h2>{{head}}</h2>
             </div>
@@ -176,7 +188,7 @@
                     <input-text v-if="question.type=='text'" :title="question.title" v-model="question.value"></input-text>
                     <input-select v-if="question.type=='select'" :title="question.title" v-model="question.value" :options="question.options"></input-select>
                     <div v-if="question.type=='radio'">
-                        <label>{{question.title}}</label>
+                        <h4>{{question.title}}</h4>
                         <div class="row">
                             <template v-for="option in question.options">
                                 <div class="col-md-4 mb-6"><label><input type="radio" :value="option" v-model="question.value" required="">{{option}}</label></div>
@@ -184,7 +196,7 @@
                         </div>
                     </div>
                     <div v-if="question.type=='checkbox'">
-                        <label>{{question.title}}</label>
+                        <h4>{{question.title}}</h4>
                         <div class="row">
                             <template v-for="option in question.options">
                                 <div class="col-md-4 mb-6">
@@ -200,44 +212,42 @@
                     </div>
                 </div>
             </div>
-            <!-- <template v-for="heal_place in questions[7].value">
-                <div>
-                    <label>{{heal_place}}</label>
-                    <div class="row">
-                        <span>物理治療每週</span>
-                        <div class="col-md-3 mb-3">
-                            <input type="text" class="form-control" required="">
+        </div>
+
+        <div id="question_8">
+            <div class="row">
+                <h2>{{head}}</h2>
+            </div>
+            <hr class="mb-4">
+            <div class="row">
+                <div v-for="(question,index) in questions" :class="question.class">
+                    <input-text v-if="question.type=='text'" :title="question.title" v-model="question.value"></input-text>
+                    <input-select v-if="question.type=='select'" :title="question.title" v-model="question.value" :options="question.options"></input-select>
+                    <div v-if="question.type=='radio'">
+                        <h4>{{question.title}}</h4>
+                        <div class="row">
+                            <template v-for="option in question.options">
+                                <div class="col-md-4 mb-6"><label><input type="radio" :value="option" v-model="question.value" required="">{{option}}</label></div>
+                            </template>
                         </div>
-                        <span>次，共</span>
-                        <div class="col-md-3 mb-3">
-                            <input type="text" placeholder="以半小時為計時單位" class="form-control" required="">
-                        </div>
-                        <span>分鐘</span>
                     </div>
-                    <div class="row">
-                        <span>職能治療每週</span>
-                        <div class="col-md-3 mb-3">
-                            <input type="text" class="form-control" required="">
+                    <div v-if="question.type=='checkbox'">
+                        <h4>{{question.title}}</h4>
+                        <div class="row">
+                            <template v-for="option in question.options">
+                                <div class="col-md-4 mb-6">
+                                    <label>
+                                        <input type="checkbox" :disabled="question.disabled && option!='無'" :value="option" v-model="question.value" required="" @click="checkOption($event, index)">{{option}}
+                                    </label>
+                                </div>
+                            </template>
                         </div>
-                        <span>次，共</span>
-                        <div class="col-md-3 mb-3">
-                            <input type="text" placeholder="以半小時為計時單位" class="form-control" required="">
-                        </div>
-                        <span>分鐘</span>
                     </div>
-                    <div class="row">
-                        <span>語言治療每週</span>
-                        <div class="col-md-3 mb-3">
-                            <input type="text" class="form-control" required="">
-                        </div>
-                        <span>次，共</span>
-                        <div class="col-md-3 mb-3">
-                            <input type="text" placeholder="以半小時為計時單位" class="form-control" required="">
-                        </div>
-                        <span>分鐘</span>
+                    <div v-if="question.value.includes('其他')">
+                        <input-other :title="question.title" v-model="question.other_value"></input-other>
                     </div>
                 </div>
-            </template> -->
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
