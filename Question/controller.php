@@ -55,6 +55,13 @@ function makeErrorReturnMessage(){
     return json_encode($table, JSON_UNESCAPED_UNICODE,JSON_FORCE_OBJECT);
 }
 switch($act) {
+        // 此為改用vue寫法之後的新增問卷
+        case "addNewQuestion":
+                $table=array();
+                $alldata = @$data[1];
+                echo (makeReturnMessage(addNewQuestion($alldata)));
+                break;
+        // 改用vue之前
         case "addQuestion":
                 $table=array();
                 $alldata = @$data[1];

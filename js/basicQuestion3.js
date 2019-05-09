@@ -1,7 +1,8 @@
+let send_data = {};
 // text
 Vue.component('input-text',{
-    props:['title','value'],
-    template:'<div><h4>{{title}}</h4><input type="text" class="form-control" v-bind:value="value" v-on:input="$emit(\'input\', $event.target.value)" required=""></div>',
+    props:['title','value','tip'],
+    template:'<div><h4>{{title}}</h4><input type="text" :placeholder="tip" class="form-control" v-bind:value="value" v-on:input="$emit(\'input\', $event.target.value)" required=""></div>',
 })
 //select
 Vue.component('input-select',{
@@ -225,7 +226,7 @@ var form = new Vue({
                     name:'family_old_brother',
                     type: 'select',
                     title: '手足人數-兄',
-                    options: getSelectNum(0,12,'人'),
+                    options: getSelectNum(0,9,'人'),
                     value: '',
                     other_value: '',
                     class:'col-md-6 mb-6',
@@ -234,7 +235,7 @@ var form = new Vue({
                     name:'family_young_brother',
                     type: 'select',
                     title: '手足人數-弟',
-                    options: getSelectNum(0,12,'人'),
+                    options: getSelectNum(0,9,'人'),
                     value: '',
                     other_value: '',
                     class:'col-md-6 mb-6',
@@ -243,7 +244,7 @@ var form = new Vue({
                     name:'family_old_sister',
                     type: 'select',
                     title: '手足人數-姐',
-                    options: getSelectNum(0,12,'人'),
+                    options: getSelectNum(0,9,'人'),
                     value: '',
                     other_value: '',
                     class:'col-md-6 mb-6',
@@ -252,7 +253,7 @@ var form = new Vue({
                     name:'family_young_sister',
                     type: 'select',
                     title: '手足人數-妹',
-                    options: getSelectNum(0,12,'人'),
+                    options: getSelectNum(0,9,'人'),
                     value: '',
                     other_value: '',
                     class:'col-md-6 mb-6',
@@ -279,6 +280,7 @@ var form = new Vue({
                     title: '父親-出生年月日',
                     value: '',
                     class:'col-md-6 mb-6',
+                    tip:'格式:19901231',
                 },
                 {
                     name:'family_feducation',
@@ -349,6 +351,7 @@ var form = new Vue({
                     title: '母親-出生年月日',
                     value: '',
                     class:'col-md-6 mb-6',
+                    tip:'格式:19901231',
                 },
                 {
                     name:'family_meducation',
@@ -595,7 +598,7 @@ var form = new Vue({
                         '生產時窒息',
                         '胎兒窘迫症',
                         '胎兒急救',
-                        '出生時臍帶繞頸',
+                        '出生時臍帶繞頭',
                     ],
                     value: [],
                     class:'col-md-12 mb-12',
@@ -666,8 +669,8 @@ var form = new Vue({
                     class:'col-md-12 mb-12',
                 },
                 {
-                    name:'abnormal_develop_neck',
-                    title: '頸部控制',
+                    name:'abnormal_develop_head',
+                    title: '頭部控制',
                     type: 'select',
                     options: getSelectNum(0,36,'個月',true),
                     value: '',
@@ -690,7 +693,7 @@ var form = new Vue({
                     class:'col-md-12 mb-12',
                 },
                 {
-                    name:'abnormal_develop_crab',
+                    name:'abnormal_develop_climb',
                     title: '爬',
                     type: 'select',
                     options: getSelectNum(0,36,'個月',true),
@@ -734,12 +737,17 @@ var form = new Vue({
     },
     computed: {
         isForest: function() {
+            // 此表為原本各項問題的類型 若選擇寄養媽媽再選回來要依照此表調整回原本的類型
+            const list = ['radio', 'select', 'select', 'select', 'select', 'radio', 'text', 'text', 'radio', 'select', 'radio', 'text', 'text', 'radio', 'select', 'radio'];
             if(this.part2.questions[3].value == '寄養媽媽'){
                 for(i in this.part6.questions){
                     if(i == 5)
                         continue;
                     this.part6.questions[i].type = 'disabled';
-                    this.part6.questions[i].value = '';
+                }
+            }else{
+                for(i in this.part6.questions){
+                    this.part6.questions[i].type = list[i];
                 }
             }
             return;
@@ -798,7 +806,6 @@ var form = new Vue({
         healPlace:function(){
             heal_places = this.part7.questions[7].value;
             this.part7.questions.splice(8,this.part7.questions.length);
-            console.log(this.part7.questions);
             for(i in heal_places){
                 const names = ['物理治療每周幾次','職能治療每周幾次','語言治療每周幾次'];
                 const input_names = ['phy_heal_hz','fun_heal_hz','language_heal_hz'];
@@ -806,19 +813,19 @@ var form = new Vue({
                 for(index in names){
                     let detail = 
                     {
-                        name:input_names[index],
+                        name:input_names[index] + '-' + heal_places[i],
                         title:heal_places[i]+names[index],
                         type:'text',
-                        value:[],
+                        value:'',
                         class:'col-md-6 mb-6'
                     }
                     this.part7.questions.push(detail);
                     let time = 
                     {
-                        name:input_time_names[index],
+                        name:input_time_names[index] + '-' + heal_places[i],
                         title:'共幾分鐘，以半小時為單位',
                         type:'text',
-                        value:[],
+                        value:'',
                         class:'col-md-6 mb-6'
                     }
                     this.part7.questions.push(time);
@@ -828,7 +835,6 @@ var form = new Vue({
     },
     methods:{
         sendData:function(){
-            let send_data = {};
             for(qindex in form._data){
                 data = form._data[qindex];
                 for(index in data.questions){
@@ -845,20 +851,23 @@ var form = new Vue({
                             }
                         }
                         if(question.other_value)
-                            send_data[question.name] = question.value.toString() + question.other_value;
+                            send_data[question.name] = question.value.toString() + '(' + question.other_value + ')';
                         else
                             send_data[question.name] = question.value.toString();
                     }
                 }
             }
-            console.log(send_data);
-            axios.post('../../Question/Controller.php', [{act:'test'},send_data])
-            .then(function (response) {
-            console.log(response);
-            })
-            .catch(function (error) {
-            console.log(error);
-            });
+            if(validate()){
+                formatData();
+                console.log(send_data);
+                axios.post('../../Question/Controller.php', [{act:'addNewQuestion'},send_data])
+                .then(function (response) {
+                console.log(response);
+                })
+                .catch(function (error) {
+                console.log(error);
+                });
+            }
         },
         checkOption: function(event, $index, question) {
             option_value = event.target.value;
@@ -890,7 +899,7 @@ for(qindex in form._data){
         switch(question.type)
         {
             case 'text':
-                question.value = 1;
+                question.value = 77282297;
                 break;
             case 'select':
                 question.value = question.options[0];
@@ -898,9 +907,184 @@ for(qindex in form._data){
             case 'radio':
                 question.value = question.options[0];
                 break;
-            // case 'checkbox':
-            //     question.value = question.options[0];
-            //     break;
+            case 'checkbox':
+                question.value.push(question.options[0]);
+                break;
         }
     }
+}
+form.part1.questions[0].value = 'z123';
+
+// 檢驗資料正確性
+function validate(){    
+    // 如果填寫寄養媽媽則不用檢查
+    var found = form.part2.questions.find(function(element) {
+      return element.name == 'caregiver';
+    });
+    isForest = found.value;
+    if(isForest!='寄養媽媽'){
+        // 檢查父親生日格式
+        var found = form.part6.questions.find(function(element) {
+          return element.name == 'family_fbirthday';
+        });
+        var birthday = found.value.toString();
+        if(birthday.length!=8){
+            alert("父親生日日期格式有誤");
+            return false;
+        }
+        var convertcontent = "";
+        convertcontent += birthday[0];
+        convertcontent += birthday[1];
+        convertcontent += birthday[2];
+        convertcontent += birthday[3];
+        convertcontent +="-";
+        convertcontent += birthday[4];
+        convertcontent += birthday[5];
+        convertcontent +="-";
+        convertcontent += birthday[6];
+        convertcontent += birthday[7];
+        var D=new Date(convertcontent);
+        if(D=="Invalid Date" && birthday !="77282297"){
+            alert("父親生日日期格式有誤");
+            return false;
+        }
+        if(birthday=="77282297")
+            console.log('不提供');
+        // 檢查母親生日格式
+        var found = form.part6.questions.find(function(element) {
+          return element.name == 'family_mbirthday';
+        });
+        var birthday = found.value.toString();
+        if(birthday.length!=8){
+            alert("母親生日日期格式有誤");
+            return false;
+        }
+        var convertcontent = "";
+        convertcontent += birthday[0];
+        convertcontent += birthday[1];
+        convertcontent += birthday[2];
+        convertcontent += birthday[3];
+        convertcontent +="-";
+        convertcontent += birthday[4];
+        convertcontent += birthday[5];
+        convertcontent +="-";
+        convertcontent += birthday[6];
+        convertcontent += birthday[7];
+        var D=new Date(convertcontent);
+        if(D=="Invalid Date" && birthday !="77282297"){
+            alert("母親生日日期格式有誤");
+            return false;
+        }
+        if(birthday=="77282297")
+            console.log('不提供');
+    }
+    return true;
+        // $("#family_mage_input").val("不提供");
+}
+
+// 重新組合資料使後端好運用
+function formatData(){
+    
+    // 身體發展
+    let abnormal_develop = '';
+    abnormal_develop += '頭部控制:' + send_data.abnormal_develop_head + '，';
+    abnormal_develop += '翻身:' + send_data.abnormal_develop_flip + '，';
+    abnormal_develop += '坐:' + send_data.abnormal_develop_sit + '，';
+    abnormal_develop += '爬:' + send_data.abnormal_develop_climb + '，';
+    abnormal_develop += '走:' + send_data.abnormal_develop_walk + '，';
+    abnormal_develop += '伸手抓物:' + send_data.abnormal_develop_get + '，';
+    abnormal_develop += '塗鴉:' + send_data.abnormal_develop_draw + '，';
+    abnormal_develop += '第一個有意義單字:' + send_data.abnormal_develop_first_word;
+    send_data.abnormal_develop = abnormal_develop;
+
+    // 就學歷史 資料庫 history需調整
+    let history = send_data.history;
+    if(history == '是')
+        history += '，' + send_data.study_time_year + '，' + send_data.study_time_month;
+    if(history == '就學過，但中斷')
+        history += '，' + send_data.stop_study_reason + '，' + send_data.study_time_year + '，' + send_data.study_time_month;
+    send_data.history = history;
+
+    // 手足人數
+    let family_brother = '';
+    family_brother += '兄' + send_data.family_old_brother + '，';
+    family_brother += '弟' + send_data.family_young_brother + '，';
+    family_brother += '姐' + send_data.family_old_sister + '，';
+    family_brother += '妹' + send_data.family_young_sister + '，';
+    // 計算排行 因資料裡有包含單位 先將單位去掉
+    family_old_brother = send_data.family_old_brother.slice(0,-1);
+    family_old_sister = send_data.family_old_sister.slice(0,-1);
+    family_brother += '排行第' + (1+parseInt(family_old_brother)+parseInt(family_old_sister)) ;
+    send_data.family_brother = family_brother;
+
+    // 治療明細
+    heal_detail = {};
+    for(key in send_data){
+        // console.log(key);
+        if(key.indexOf('phy_heal_hz')>-1){
+            hospital = key.split('-')[1];
+            tmp = '物理治療每周-'+send_data[key]+'次';
+            if(!heal_detail[hospital])
+                heal_detail[hospital] = [];
+            heal_detail[hospital].push(tmp);
+        }
+        if(key.indexOf('fun_heal_hz')>-1){
+            hospital = key.split('-')[1];
+            tmp = '職能治療每周-'+send_data[key]+'次';
+            if(!heal_detail[hospital]){
+                heal_detail[hospital] = [];
+            }
+            heal_detail[hospital].push(tmp);
+        }
+        if(key.indexOf('fun_heal_hz')>-1){
+            hospital = key.split('-')[1];
+            tmp = '語言治療每周-'+send_data[key]+'次';
+            if(!heal_detail[hospital])
+                heal_detail[hospital] = [];
+            heal_detail[hospital].push(tmp);
+        }
+        if(key.indexOf('phy_heal_time')>-1){
+            hospital = key.split('-')[1];
+            tmp = '物理治療每次-'+send_data[key]+'分鐘';
+            if(!heal_detail[hospital])
+                heal_detail[hospital] = [];
+            heal_detail[hospital].push(tmp);
+        }
+        if(key.indexOf('fun_heal_time')>-1){
+            hospital = key.split('-')[1];
+            tmp = '職能治療每次-'+send_data[key]+'分鐘';
+            if(!heal_detail[hospital])
+                heal_detail[hospital] = [];
+            heal_detail[hospital].push(tmp);
+        }if(key.indexOf('fun_heal_time')>-1){
+            hospital = key.split('-')[1];
+            tmp = '語言治療每次-'+send_data[key]+'分鐘';
+            if(!heal_detail[hospital])
+                heal_detail[hospital] = [];
+            heal_detail[hospital].push(tmp);
+        }
+    }
+    data = '';
+    for(hospital in heal_detail){
+        heal_detail[hospital].sort();
+        data += hospital + ':';
+        for(j in heal_detail[hospital]){
+            data += heal_detail[hospital][j];
+            if(j != heal_detail[hospital].length-1)
+                data += '，';
+            else
+                data += ';';
+        }
+    }
+    send_data.heal_detail = data;
+
+    // 治療持續時間
+    // 有其中一項治療時間代表三項都有資料要填
+    if(send_data.phy_heal_keep_time){
+        treat_time = '';
+        treat_time += '物理治療持續時間:' + send_data.phy_heal_keep_time + ';';
+        treat_time += '職能治療持續時間:' + send_data.fun_heal_keep_time + ';';
+        treat_time += '語言治療持續時間:' + send_data.language_heal_keep_time + ';';
+    }
+    send_data.treat_time = treat_time;
 }

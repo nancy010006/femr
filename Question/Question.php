@@ -171,6 +171,129 @@ function getMidCaseListbydate($startday,$endday) {
         return $table;
         // return json_encode($table, JSON_FORCE_OBJECT);
 }
+function addNewQuestion($alldata){
+    global $conn;
+    date_default_timezone_set('Asia/Taipei');
+    // echo date("Y-m-d H:i:s");
+    $asiatime = date("Y-m-d H:i:s");
+    $caseid = mysqli_real_escape_string($conn,@$alldata['caseid']);
+    $height = mysqli_real_escape_string($conn,@$alldata['height']);
+    $weight = mysqli_real_escape_string($conn,@$alldata['weight']);
+    $head_circumference = mysqli_real_escape_string($conn,@$alldata['head_circumference']);
+    $caregiver = mysqli_real_escape_string($conn,@$alldata['caregiver']);
+    $history = mysqli_real_escape_string($conn,@$alldata['history']);
+    $day = mysqli_real_escape_string($conn,@$alldata['day']);
+    $question_language = mysqli_real_escape_string($conn,@$alldata['question_language']);
+    $question_action = mysqli_real_escape_string($conn,@$alldata['question_action']);
+    $question_learn = mysqli_real_escape_string($conn,@$alldata['question_learn']);
+    $question_relationship = mysqli_real_escape_string($conn,@$alldata['question_relationship']);
+    $question_mood = mysqli_real_escape_string($conn,@$alldata['question_mood']);
+    $question_attention = mysqli_real_escape_string($conn,@$alldata['question_attention']);
+    $question_perception = mysqli_real_escape_string($conn,@$alldata['question_perception']);
+    $question_lifestyle = mysqli_real_escape_string($conn,@$alldata['question_lifestyle']);
+    $question_strangestyle = mysqli_real_escape_string($conn,@$alldata['question_strangestyle']);
+    $question_selfmutilation = mysqli_real_escape_string($conn,@$alldata['question_selfmutilation']);
+    $question_helpkid = mysqli_real_escape_string($conn,@$alldata['question_helpkid']);
+    $target = mysqli_real_escape_string($conn,@$alldata['target']);
+    $family_married = mysqli_real_escape_string($conn,@$alldata['family_married']);
+    $family_brother = mysqli_real_escape_string($conn,@$alldata['family_brother']);
+    $family_fname = mysqli_real_escape_string($conn,@$alldata['family_fname']);
+    $family_fage = mysqli_real_escape_string($conn,@$alldata['family_fage']);
+    $family_feducation = mysqli_real_escape_string($conn,@$alldata['family_feducation']);
+    $family_fcareer = mysqli_real_escape_string($conn,@$alldata['family_fcareer']);
+    $family_fcountry = mysqli_real_escape_string($conn,@$alldata['family_fcountry']);
+    $family_mname = mysqli_real_escape_string($conn,@$alldata['family_mname']);
+    $family_mage = mysqli_real_escape_string($conn,@$alldata['family_mage']);
+    $family_meducation = mysqli_real_escape_string($conn,@$alldata['family_meducation']);
+    $family_mcareer = mysqli_real_escape_string($conn,@$alldata['family_mcareer']);
+    $family_mcountry = mysqli_real_escape_string($conn,@$alldata['family_mcountry']);
+    $family_family = mysqli_real_escape_string($conn,@$alldata['family_family']);
+    $treat_status = mysqli_real_escape_string($conn,@$alldata['treat_status']);
+    $treat_type = mysqli_real_escape_string($conn,@$alldata['treat_type']);
+    $treat_location = mysqli_real_escape_string($conn,@$alldata['treat_location']);
+    $treat_hz = mysqli_real_escape_string($conn,@$alldata['treat_hz']);
+    $treat_time = mysqli_real_escape_string($conn,@$alldata['treat_time']);
+    $heal_detail = mysqli_real_escape_string($conn,@$alldata['heal_detail']);
+    $history_family = mysqli_real_escape_string($conn,@$alldata['history_family']);
+    $history_nutrition = mysqli_real_escape_string($conn,@$alldata['history_nutrition']);
+    $history_disease = mysqli_real_escape_string($conn,@$alldata['history_disease']);
+    $history_medication = mysqli_real_escape_string($conn,@$alldata['history_medication']);
+    $history_abuse = mysqli_real_escape_string($conn,@$alldata['history_abuse']);
+    $history_pregcount = mysqli_real_escape_string($conn,@$alldata['history_pregcount']);
+    $history_birthcount = mysqli_real_escape_string($conn,@$alldata['history_birthcount']);
+    $history_abortion = mysqli_real_escape_string($conn,@$alldata['history_abortion']);
+    $history_pregweek = mysqli_real_escape_string($conn,@$alldata['history_pregweek']);
+    $history_pregprocess = mysqli_real_escape_string($conn,@$alldata['history_pregprocess']);
+    $neonatal_screening = mysqli_real_escape_string($conn,@$alldata['neonatal_screening']);
+    $abnormal_neonatal = mysqli_real_escape_string($conn,@$alldata['abnormal_neonatal']);
+    $abnormal_disease = mysqli_real_escape_string($conn,@$alldata['abnormal_disease']);
+    $abnormal_develop = mysqli_real_escape_string($conn,@$alldata['abnormal_develop']);
+
+    if(empty($family_married))
+            $family_married="無資料";
+        if(empty($family_brother))
+            $family_brother="無資料";
+        if(empty($family_fname))
+            $family_fname="無資料";
+        if(empty($family_fage))
+            $family_fage="無資料";
+        if(empty($family_feducation))
+            $family_feducation="無資料";
+        if(empty($family_fcareer))
+            $family_fcareer="無資料";
+        if(empty($family_fcountry))
+            $family_fcountry="無資料";
+        if(empty($family_mname))
+            $family_mname="無資料";
+        if(empty($family_mage))
+            $family_mage="無資料";
+        if(empty($family_meducation))
+            $family_meducation="無資料";
+        if(empty($family_mcareer))
+            $family_mcareer="無資料";
+        if(empty($family_mcountry))
+            $family_mcountry="無資料";
+        if(empty($history_nutrition))
+            $history_nutrition="無資料";
+        if(empty($history_disease))
+            $history_disease="無資料";
+        if(empty($history_medication))
+            $history_medication="無資料";
+        if(empty($history_abuse))
+            $history_abuse="無資料";
+        if(empty($history_pregcount))
+            $history_pregcount="無資料";
+        if(empty($history_birthcount))
+            $history_birthcount="無資料";
+        if(empty($history_abortion))
+            $history_abortion="無資料";
+        if(empty($history_pregweek))
+            $history_pregweek="無資料";
+        if(empty($history_pregprocess))
+            $history_pregprocess="無資料";
+
+        if ($caseid) { //if item is not empty
+                $sql = "select caseid from midcasehistory where caseid='$caseid';";
+                $result = mysqli_query($conn,$sql);
+                // $table = array();
+                // print_r($result);
+                if($result->num_rows==0)
+                    return 422;
+                $sql = "insert into data 
+                (caseid,height, weight,head_circumference, caregiver,history,day,question_language,question_action,question_learn,question_relationship,question_mood,question_attention,question_perception,question_lifestyle,question_strangestyle,question_selfmutilation,question_helpkid,target,family_married,family_brother,family_fname,family_fage,family_feducation,family_fcareer,family_fcountry,family_mname,family_mage,family_meducation,family_mcareer,family_mcountry,family_family,treat_status,treat_type,treat_location,treat_hz,treat_time,heal_detail,history_family,history_nutrition,history_disease,history_medication,history_abuse,history_pregcount,history_birthcount,history_abortion,history_pregweek,history_pregprocess,neonatal_screening,abnormal_neonatal,abnormal_disease,abnormal_develop,writetime)
+                 values 
+                 ('$caseid','$height','$weight','$head_circumference','$caregiver','$history','$day','$question_language','$question_action','$question_learn','$question_relationship','$question_mood','$question_attention','$question_perception','$question_lifestyle','$question_strangestyle','$question_selfmutilation','$question_helpkid','$target','$family_married','$family_brother','$family_fname','$family_fage','$family_feducation','$family_fcareer','$family_fcountry','$family_mname','$family_mage','$family_meducation','$family_mcareer','$family_mcountry','$family_family','$treat_status','$treat_type','$treat_location','$treat_hz','$treat_time','$heal_detail','$history_family','$history_nutrition','$history_disease','$history_medication','$history_abuse','$history_pregcount','$history_birthcount','$history_abortion','$history_pregweek','$history_pregprocess','$neonatal_screening','$abnormal_neonatal','$abnormal_disease','$abnormal_develop','$asiatime');";
+                //echo $sql;
+                if(mysqli_query($conn, $sql))
+                        return 200;
+                else if(mysqli_error($conn)=="Cannot add or update a child row: a foreign key constraint fails (`hospital`.`data`, CONSTRAINT `data_ibfk_1` FOREIGN KEY (`caseid`) REFERENCES `midcase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE)")
+                        return 422;
+                else
+                        return 500;
+        }else{
+                return 400;
+        }
+}
 function addQuestion($alldata) {
         global $conn;
         date_default_timezone_set('Asia/Taipei');
