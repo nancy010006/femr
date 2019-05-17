@@ -230,69 +230,70 @@ function addNewQuestion($alldata){
     $abnormal_develop = mysqli_real_escape_string($conn,@$alldata['abnormal_develop']);
 
     if(empty($family_married))
-            $family_married="無資料";
-        if(empty($family_brother))
-            $family_brother="無資料";
-        if(empty($family_fname))
-            $family_fname="無資料";
-        if(empty($family_fage))
-            $family_fage="無資料";
-        if(empty($family_feducation))
-            $family_feducation="無資料";
-        if(empty($family_fcareer))
-            $family_fcareer="無資料";
-        if(empty($family_fcountry))
-            $family_fcountry="無資料";
-        if(empty($family_mname))
-            $family_mname="無資料";
-        if(empty($family_mage))
-            $family_mage="無資料";
-        if(empty($family_meducation))
-            $family_meducation="無資料";
-        if(empty($family_mcareer))
-            $family_mcareer="無資料";
-        if(empty($family_mcountry))
-            $family_mcountry="無資料";
-        if(empty($history_nutrition))
-            $history_nutrition="無資料";
-        if(empty($history_disease))
-            $history_disease="無資料";
-        if(empty($history_medication))
-            $history_medication="無資料";
-        if(empty($history_abuse))
-            $history_abuse="無資料";
-        if(empty($history_pregcount))
-            $history_pregcount="無資料";
-        if(empty($history_birthcount))
-            $history_birthcount="無資料";
-        if(empty($history_abortion))
-            $history_abortion="無資料";
-        if(empty($history_pregweek))
-            $history_pregweek="無資料";
-        if(empty($history_pregprocess))
-            $history_pregprocess="無資料";
+        $family_married="無資料";
+    if(empty($family_brother))
+        $family_brother="無資料";
+    if(empty($family_fname))
+        $family_fname="無資料";
+    if(empty($family_fage))
+        $family_fage="無資料";
+    if(empty($family_feducation))
+        $family_feducation="無資料";
+    if(empty($family_fcareer))
+        $family_fcareer="無資料";
+    if(empty($family_fcountry))
+        $family_fcountry="無資料";
+    if(empty($family_mname))
+        $family_mname="無資料";
+    if(empty($family_mage))
+        $family_mage="無資料";
+    if(empty($family_meducation))
+        $family_meducation="無資料";
+    if(empty($family_mcareer))
+        $family_mcareer="無資料";
+    if(empty($family_mcountry))
+        $family_mcountry="無資料";
+    if(empty($history_nutrition))
+        $history_nutrition="無資料";
+    if(empty($history_disease))
+        $history_disease="無資料";
+    if(empty($history_medication))
+        $history_medication="無資料";
+    if(empty($history_abuse))
+        $history_abuse="無資料";
+    if(empty($history_pregcount))
+        $history_pregcount="無資料";
+    if(empty($history_birthcount))
+        $history_birthcount="無資料";
+    if(empty($history_abortion))
+        $history_abortion="無資料";
+    if(empty($history_pregweek))
+        $history_pregweek="無資料";
+    if(empty($history_pregprocess))
+        $history_pregprocess="無資料";
 
-        if ($caseid) { //if item is not empty
-                $sql = "select caseid from midcasehistory where caseid='$caseid';";
-                $result = mysqli_query($conn,$sql);
-                // $table = array();
-                // print_r($result);
-                if($result->num_rows==0)
+    $bmi = round($weight/($height*0.01*$height*0.01),1);
+    if ($caseid) { //if item is not empty
+            $sql = "select caseid from midcasehistory where caseid='$caseid';";
+            $result = mysqli_query($conn,$sql);
+            // $table = array();
+            // print_r($result);
+            if($result->num_rows==0)
+                return 422;
+            $sql = "insert into data 
+            (caseid,height, weight, bmi,head_circumference, caregiver,history,day,question_language,question_action,question_learn,question_relationship,question_mood,question_attention,question_perception,question_lifestyle,question_strangestyle,question_selfmutilation,question_helpkid,target,family_married,family_brother,family_fname,family_fage,family_feducation,family_fcareer,family_fcountry,family_mname,family_mage,family_meducation,family_mcareer,family_mcountry,family_family,treat_status,treat_type,treat_location,treat_hz,treat_time,heal_detail,history_family,history_nutrition,history_disease,history_medication,history_abuse,history_pregcount,history_birthcount,history_abortion,history_pregweek,history_pregprocess,neonatal_screening,abnormal_neonatal,abnormal_disease,abnormal_develop,writetime)
+             values 
+             ('$caseid','$height','$weight','$bmi','$head_circumference','$caregiver','$history','$day','$question_language','$question_action','$question_learn','$question_relationship','$question_mood','$question_attention','$question_perception','$question_lifestyle','$question_strangestyle','$question_selfmutilation','$question_helpkid','$target','$family_married','$family_brother','$family_fname','$family_fage','$family_feducation','$family_fcareer','$family_fcountry','$family_mname','$family_mage','$family_meducation','$family_mcareer','$family_mcountry','$family_family','$treat_status','$treat_type','$treat_location','$treat_hz','$treat_time','$heal_detail','$history_family','$history_nutrition','$history_disease','$history_medication','$history_abuse','$history_pregcount','$history_birthcount','$history_abortion','$history_pregweek','$history_pregprocess','$neonatal_screening','$abnormal_neonatal','$abnormal_disease','$abnormal_develop','$asiatime');";
+            //echo $sql;
+            if(mysqli_query($conn, $sql))
+                    return 200;
+            else if(mysqli_error($conn)=="Cannot add or update a child row: a foreign key constraint fails (`hospital`.`data`, CONSTRAINT `data_ibfk_1` FOREIGN KEY (`caseid`) REFERENCES `midcase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE)")
                     return 422;
-                $sql = "insert into data 
-                (caseid,height, weight,head_circumference, caregiver,history,day,question_language,question_action,question_learn,question_relationship,question_mood,question_attention,question_perception,question_lifestyle,question_strangestyle,question_selfmutilation,question_helpkid,target,family_married,family_brother,family_fname,family_fage,family_feducation,family_fcareer,family_fcountry,family_mname,family_mage,family_meducation,family_mcareer,family_mcountry,family_family,treat_status,treat_type,treat_location,treat_hz,treat_time,heal_detail,history_family,history_nutrition,history_disease,history_medication,history_abuse,history_pregcount,history_birthcount,history_abortion,history_pregweek,history_pregprocess,neonatal_screening,abnormal_neonatal,abnormal_disease,abnormal_develop,writetime)
-                 values 
-                 ('$caseid','$height','$weight','$head_circumference','$caregiver','$history','$day','$question_language','$question_action','$question_learn','$question_relationship','$question_mood','$question_attention','$question_perception','$question_lifestyle','$question_strangestyle','$question_selfmutilation','$question_helpkid','$target','$family_married','$family_brother','$family_fname','$family_fage','$family_feducation','$family_fcareer','$family_fcountry','$family_mname','$family_mage','$family_meducation','$family_mcareer','$family_mcountry','$family_family','$treat_status','$treat_type','$treat_location','$treat_hz','$treat_time','$heal_detail','$history_family','$history_nutrition','$history_disease','$history_medication','$history_abuse','$history_pregcount','$history_birthcount','$history_abortion','$history_pregweek','$history_pregprocess','$neonatal_screening','$abnormal_neonatal','$abnormal_disease','$abnormal_develop','$asiatime');";
-                //echo $sql;
-                if(mysqli_query($conn, $sql))
-                        return 200;
-                else if(mysqli_error($conn)=="Cannot add or update a child row: a foreign key constraint fails (`hospital`.`data`, CONSTRAINT `data_ibfk_1` FOREIGN KEY (`caseid`) REFERENCES `midcase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE)")
-                        return 422;
-                else
-                        return 500;
-        }else{
-                return 400;
-        }
+            else
+                    return 500;
+    }else{
+            return 400;
+    }
 }
 function addQuestion($alldata) {
         global $conn;
@@ -714,7 +715,7 @@ function DataTablegetDataListbydate($requestData) {
         // print_r($columns);
         /***無資料庫權限使用**********/
         $columns =Array
-        ("id","caseid","writetime","height","weight","head_circumference","caregiver","history","question_language","question_action","question_learn","question_relationship","question_mood","question_attention","question_perception","question_lifestyle","question_strangestyle","question_selfmutilation","question_helpkid","target","family_married","family_brother","family_fname","family_fage","family_feducation","family_fcareer","family_fcountry","family_mname","family_mage","family_meducation","family_mcareer","family_mcountry","family_family","treat_status","treat_type","treat_location","treat_hz","history_family","history_nutrition","history_disease","history_medication","history_abuse","history_pregcount","history_birthcount","history_abortion","history_pregweek","history_pregprocess","neonatal_screening","abnormal_neonatal","abnormal_disease","abnormal_develop"
+        ("id","caseid","writetime","height","weight","bmi","head_circumference","caregiver","history","question_language","question_action","question_learn","question_relationship","question_mood","question_attention","question_perception","question_lifestyle","question_strangestyle","question_selfmutilation","question_helpkid","target","family_married","family_brother","family_fname","family_fage","family_feducation","family_fcareer","family_fcountry","family_mname","family_mage","family_meducation","family_mcareer","family_mcountry","family_family","treat_status","treat_type","treat_location","treat_hz","treat_time","heal_detail","history_family","history_nutrition","history_disease","history_medication","history_abuse","history_pregcount","history_birthcount","history_abortion","history_pregweek","history_pregprocess","neonatal_screening","abnormal_neonatal","abnormal_disease","abnormal_develop"
         );
         /*******************************/
         $sql = "SELECT * ";

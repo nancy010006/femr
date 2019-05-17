@@ -150,11 +150,44 @@ function filter(){
                 "searchable": false
             },
             {
+                "aTargets" :　[39],  
+                "mRender" : function(data, type, full,a){  
+                    data = full[a.col-1];
+                    data_with_hospital = skipEmptyElementForArray(data.split(';'));
+                    result = "";
+                    for (var i = 0; i < data_with_hospital.length; i++) {
+                        result += data_with_hospital[i] + ";<br>";
+                    }
+                    // data = 
+                    return result;
+                }  
+            },
+            {
+                "aTargets" :　[40],  
+                "mRender" : function(data, type, full,a){  
+                    data = full[a.col-1];
+                    data_with_hospital = skipEmptyElementForArray(data.split(';'));
+                    result = "";
+                    for (i in data_with_hospital) {
+                        data_and_hospital = skipEmptyElementForArray(data_with_hospital[i].split(':'));
+                        hospital = data_and_hospital[0];
+                        datas = data_and_hospital[1];
+                        datas = skipEmptyElementForArray(datas.split('，'));
+                        result += "<p>" + hospital + ":</p>";
+                        for (k in datas) {
+                            console.log(datas[k]);
+                            result += datas[k] + ";<br>";
+                        }
+                    }
+                    return result;
+                }  
+            },
+            {
                 "aTargets" :　["_all"],  
                 "mRender" : function(data, type, full,a){
                     return full[a.col-1];
                 }  
-            }
+            },
         ],
         "bProcessing" : true,
         "lengthMenu": [[10, 25, 50, 100,500,1000, -1], [10, 25, 50, 100,500,1000, "All"]],
@@ -215,3 +248,13 @@ function filter(){
         });
     });
 }
+function skipEmptyElementForArray(arr){  
+    var a = [];  
+    $.each(arr,function(i,v){  
+        var data = $.trim(v);//$.trim()函数来自jQuery  
+        if('' != data){  
+            a.push(data);  
+        }  
+    });  
+    return a;  
+}  
