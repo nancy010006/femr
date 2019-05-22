@@ -168,7 +168,7 @@ var form = new Vue({
                     name:'question_perception',
                     title:'G.感官知覺',
                     type:'checkbox',
-                    options:['無', '聽力問題', '斜視', '斜視', '弱視', '遠視', '近視', '缺乏反應', '過度敏感',],
+                    options:['無', '聽力問題', '斜視', '弱視', '遠視', '近視', '缺乏反應', '過度敏感',],
                     value:[],
                     class:'col-md-12 mb-12'
                 },
@@ -587,6 +587,30 @@ var form = new Vue({
                     class:'col-md-12 mb-12',
                 },
                 {
+                    name:'preg_week',
+                    title: '孕期-週數',
+                    type: 'select',
+                    options: getSelectNum(1,50,'週'),
+                    value: '',
+                    class:'col-md-12 mb-12',
+                },
+                {
+                    name:'preg_day',
+                    title: '孕期-又幾天',
+                    type: 'select',
+                    options: getSelectNum(0,6,'天',1),
+                    value: '',
+                    class:'col-md-12 mb-12',
+                },
+                {
+                    name:'birth_weight',
+                    title: '出生體重',
+                    type: 'text',
+                    value: '',
+                    class:'col-md-12 mb-12',
+                    tip:'單位:克',
+                },
+                {
                     name:'history_pregprocess',
                     title: '產程',
                     type: 'checkbox',
@@ -942,30 +966,6 @@ function getSelectNum(from,end,unit='',unknown=''){
     return result;
 }
 
-// 自動填入資料
-// for(qindex in form._data){
-//     data = form._data[qindex];
-//     for(index in data.questions){
-//         question = data.questions[index];
-//         switch(question.type)
-//         {
-//             case 'text':
-//                 question.value = 77282297;
-//                 break;
-//             case 'select':
-//                 question.value = question.options[0];
-//                 break;
-//             case 'radio':
-//                 question.value = question.options[0];
-//                 break;
-//             case 'checkbox':
-//                 question.value.push(question.options[0]);
-//                 break;
-//         }
-//     }
-// }
-// form.part1.questions[0].value = 'z123';
-
 // 檢驗資料正確性
 function validate(){    
     // 如果填寫寄養媽媽則不用檢查
@@ -1140,4 +1140,34 @@ function formatData(){
         treat_time += '語言治療持續時間:' + send_data.language_heal_keep_time + ';';
         send_data.treat_time = treat_time;
     }
+
+    // 孕期
+    send_data.history_pregweek = send_data.preg_week + '，' + send_data.preg_day + '，' + send_data.birth_weight + '克';
 }
+
+
+
+// 自動填入資料
+// part8 裡有一個text 他的value為'' 會導致html 的question.value.include不能用 現在懶得修 如果未來還有需要自動填入 再想辦法修正
+// for(qindex in form._data){
+//     data = form._data[qindex];
+//     for(index in data.questions){
+//         question = data.questions[index];
+//         switch(question.type)
+//         {
+//             case 'text':
+//                 question.value = 77282297;
+//                 break;
+//             case 'select':
+//                 question.value = question.options[0];
+//                 break;
+//             case 'radio':
+//                 question.value = question.options[0];
+//                 break;
+//             case 'checkbox':
+//                 question.value.push(question.options[0]);
+//                 break;
+//         }
+//     }
+// }
+// form.part1.questions[0].value = 'z123';
