@@ -153,10 +153,12 @@ function filter(){
                 "aTargets" :　[39],  
                 "mRender" : function(data, type, full,a){  
                     data = full[a.col-1];
-                    data_with_hospital = skipEmptyElementForArray(data.split(';'));
                     result = "";
-                    for (var i = 0; i < data_with_hospital.length; i++) {
-                        result += data_with_hospital[i] + ";<br>";
+                    if(data != '無資料'){
+                        data_with_hospital = skipEmptyElementForArray(data.split(';'));
+                        for (var i = 0; i < data_with_hospital.length; i++) {
+                            result += data_with_hospital[i] + ";<br>";
+                        }
                     }
                     // data = 
                     return result;
@@ -166,17 +168,19 @@ function filter(){
                 "aTargets" :　[40],  
                 "mRender" : function(data, type, full,a){  
                     data = full[a.col-1];
-                    data_with_hospital = skipEmptyElementForArray(data.split(';'));
                     result = "";
-                    for (i in data_with_hospital) {
-                        data_and_hospital = skipEmptyElementForArray(data_with_hospital[i].split(':'));
-                        hospital = data_and_hospital[0];
-                        datas = data_and_hospital[1];
-                        datas = skipEmptyElementForArray(datas.split('，'));
-                        result += "<p>" + hospital + ":</p>";
-                        for (k in datas) {
-                            console.log(datas[k]);
-                            result += datas[k] + ";<br>";
+                    if(data != '無資料'){
+                        data_with_hospital = skipEmptyElementForArray(data.split(';'));
+                        for (i in data_with_hospital) {
+                            data_and_hospital = skipEmptyElementForArray(data_with_hospital[i].split(':'));
+                            hospital = data_and_hospital[0];
+                            datas = data_and_hospital[1];
+                            datas = skipEmptyElementForArray(datas.split('，'));
+                            result += "<p>" + hospital + ":</p>";
+                            for (k in datas) {
+                                console.log(datas[k]);
+                                result += datas[k] + ";<br>";
+                            }
                         }
                     }
                     return result;
