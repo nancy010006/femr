@@ -4,6 +4,11 @@ Vue.component('input-text',{
     props:['title','value','tip'],
     template:'<div><h4>{{title}}</h4><input type="text" :placeholder="tip" class="form-control" v-bind:value="value" v-on:input="$emit(\'input\', $event.target.value)" required=""></div>',
 })
+// number
+Vue.component('input-number',{
+    props:['title','value','tip'],
+    template:'<div><h4>{{title}}</h4><input type="number" :placeholder="tip" class="form-control" v-bind:value="value" v-on:input="$emit(\'input\', $event.target.value)" required=""></div>',
+})
 //select
 Vue.component('input-select',{
     props:['title','value','options','unit'],
@@ -35,21 +40,21 @@ var form = new Vue({
             questions:[
                 {
                     name:'height',
-                    type: 'text',
+                    type: 'number',
                     title: '目前身高',
                     value: '',
                     class:'col-md-6 mb-6',
                 },
                 {
                     name:'weight',
-                    type: 'text',
+                    type: 'number',
                     title: '體重',
                     value: '',
                     class:'col-md-6 mb-6',
                 },
                 {
                     name:'head_circumference',
-                    type: 'text',
+                    type: 'number',
                     title: '頭圍',
                     value: '',
                     class:'col-md-6 mb-6',
