@@ -7,7 +7,7 @@ Vue.component('input-text',{
 // number
 Vue.component('input-number',{
     props:['title','value','tip'],
-    template:'<div><h4>{{title}}</h4><input type="number" :placeholder="tip" class="form-control" v-bind:value="value" v-on:input="$emit(\'input\', $event.target.value)" required=""></div>',
+    template:'<div><h4>{{title}}</h4><input type="number" step="0.01" :placeholder="tip" class="form-control" v-bind:value="value" v-on:input="$emit(\'input\', $event.target.value)" required=""></div>',
 })
 //select
 Vue.component('input-select',{
@@ -432,7 +432,7 @@ var form = new Vue({
                     title: '開始療育年齡-月數',
                     type: 'disabled',
                     options: getSelectNum(0,11,'個月'),
-                    value: '2個月',
+                    value: '',
                     class:'col-md-6 mb-6',
                 },
                 {
@@ -588,7 +588,7 @@ var form = new Vue({
                         '自然流產',
                         '人工流產',
                     ],
-                    value: [],
+                    value: '',
                     class:'col-md-12 mb-12',
                 },
                 {
@@ -610,7 +610,7 @@ var form = new Vue({
                 {
                     name:'birth_weight',
                     title: '出生體重',
-                    type: 'text',
+                    type: 'number',
                     value: '',
                     class:'col-md-12 mb-12',
                     tip:'單位:克',
@@ -958,9 +958,110 @@ var form = new Vue({
             } else if (option_value === '無' && option_status === false) {
                 question.disabled = false;
             }
+        },
+        getOriginData:function(){
+            var Request = new Object();    
+            Request = GetRequest();
+            var caseid = Request['id'];
+            axios.post('../../Question/controller.php', [{"act":"getQuestionDetail"},{"id":caseid}])
+                .then(function (response) {
+                    status = response.data[0].status;
+                    if(status == 200){
+                        var originData = response.data[1];
+                        // 處理格式不同的資料
+                        // 發展史
+                        abnormal_develop = originData.abnormal_develop.split('，');
+                        tmp = 
+                        [
+                            'abnormal_develop_head',
+                            'abnormal_develop_flip',
+                            'abnormal_develop_sit',
+                            'abnormal_develop_climb',
+                            'abnormal_develop_walk',
+                            'abnormal_develop_get',
+                            'abnormal_develop_draw',
+                            'abnormal_develop_first_word',
+                        ];
+                        abnormal_develop.forEach(item =>{
+                            let data = item.split(':');
+                            let name = tmp.shift();
+                            originData[name] = data[1];
+                        });
+                        // 孕期
+                        history_pregweek = originData.history_pregweek.split('，');
+                        tmp = [
+                            'preg_week',
+                            'preg_day',
+                            'birth_weight'
+                        ];
+                        history_pregweek.forEach(item =>{
+                            let name = tmp.shift();
+                            // 因為出生體重會有克數 但前端不會有 把文字取代掉
+                            let replace = item.replace(/克/g, "");
+                            originData[name] = replace;
+                        })
+                        // 手足人數
+                        if(originData.family_brother){
+                            family_brother = originData.family_brother.split('，');
+                            tmp = 
+                            [
+                                'family_old_brother',
+                                'family_young_brother',
+                                'family_old_sister',
+                                'family_young_sister',
+                            ];
+                            family_brother.forEach(item =>{
+                                let name = tmp.shift();
+                                item = item.replace(/兄/g, "");
+                                item = item.replace(/弟/g, "");
+                                item = item.replace(/姐/g, "");
+                                item = item.replace(/妹/g, "");
+                                console.log(item);
+                                originData[name] = item;
+                            })
+                        }
+                        console.log(history_pregweek);
+                        console.log(originData);
+                        for(qindex in form._data){
+                            data = form._data[qindex];
+                            for(index in data.questions){
+                                question = data.questions[index];
+                                // console.log();
+                                if(typeof(question.value)!='object'){
+                                    if(originData[question.name] != undefined)
+                                        question.value = originData[question.name];
+                                }else{
+                                    if(originData[question.name] != undefined)
+                                        question.value.push(originData[question.name]);
+                                }
+                                if(question.other_value)
+                                    send_data[question.name] = question.value.toString() + '(' + question.other_value + ')';
+                                else
+                                    send_data[question.name] = question.value.toString();
+                            }
+                        }
+                    }
+                })
+                .catch(function (error) {
+                });
         }
     },
+    created(){
+        this.getOriginData();
+    },
 });
+function GetRequest() {        
+     var url = location.search;   
+     var theRequest = new Object();        
+     if (url.indexOf("?") != -1) {         
+        var str = url.substr(1);           
+        strs = str.split("&");         
+        for(var i = 0; i < strs.length; i++) {          
+           theRequest[strs[i].split("=")[0]]=decodeURI(strs[i].split("=")[1]);         
+        }          
+     }         
+     return theRequest;
+}
 function getSelectNum(from,end,unit='',unknown=''){
     result = [];
     for(i = from; i <= end; i++){

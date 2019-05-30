@@ -69,7 +69,7 @@ $(document).ready(function() {
         }else{
             var data = dataTable.rows('.selected').data()[0];
             console.log(data);
-            window.location.href = "updatedata.html?id="+data[0];
+            window.location.href = "basicQuestion.html?id="+data[0];
         }
     });
     $("#selectall").click(function(event){
