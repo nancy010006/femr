@@ -86,7 +86,7 @@ var form = new Vue({
                     name:'history',
                     type: 'radio',
                     title: '是否就學',
-                    options: ['是', '否', '就學過，但中斷'],
+                    options: ['是', '否', '就學過但中斷'],
                     value: '',
                     other_value: '',
                     class:'col-md-12 mb-12',
@@ -794,7 +794,7 @@ var form = new Vue({
                 this.part3.questions[2].type='select';
                 this.part3.questions[3].type='select';
             }
-            if(this.part3.questions[0].value === '就學過，但中斷'){
+            if(this.part3.questions[0].value === '就學過但中斷'){
                 this.part3.questions[1].type='radio';
                 this.part3.questions[2].type='select';
                 this.part3.questions[3].type='select';
@@ -832,11 +832,11 @@ var form = new Vue({
                 this.part7.questions[7].type = 'checkbox';
               break;
             default:
-                this.part7.questions[3].type = 'disabled';
-                this.part7.questions[4].type = 'disabled';
-                this.part7.questions[5].type = 'disabled';
-                this.part7.questions[6].type = 'disabled';
-                this.part7.questions[7].type = 'disabled';
+                this.part7.questions.forEach((question,index) => {
+                    if(index >= 3)
+                        question.type = 'disabled';
+
+                });
             }
             return;
         },
@@ -1016,23 +1016,81 @@ var form = new Vue({
                                 item = item.replace(/弟/g, "");
                                 item = item.replace(/姐/g, "");
                                 item = item.replace(/妹/g, "");
-                                console.log(item);
                                 originData[name] = item;
                             })
                         }
-                        console.log(history_pregweek);
-                        console.log(originData);
+                        // 就學歷史
+                        if(originData.history){
+                            study_history = originData.history.split('，');
+                            tmp = 
+                            [
+                                'history',
+                                'stop_study_reason',
+                                'study_time_year',
+                                'study_time_month',
+                            ];
+                            if(study_history[0] == '是')
+                                tmp.splice(1, 1);
+                            console.log(study_history);
+                            study_history.forEach(item =>{
+                                let name = tmp.shift();
+                                originData[name] = item;
+                            })
+                        }
+                        // 療育詳細
+                        if(originData.heal_detail && originData.heal_detail != '無資料'){
+                            heal_detail = skipEmptyElementForArray(originData.heal_detail.split(';'));
+                            console.log(heal_detail);
+                            heal_detail.forEach(hospital_detail => {
+                                tmp = 
+                                [
+                                    'phy_heal_hz',
+                                    'phy_heal_time',
+                                    'fun_heal_hz',
+                                    'fun_heal_time',
+                                    'language_heal_hz',
+                                    'language_heal_time',
+                                ];
+                                split = skipEmptyElementForArray(hospital_detail.split(':'));
+                                hospital_name = split[0];
+                                treat_details = split[1];
+                                treat_details = treat_details.split('，');
+                                treat_details.forEach(treat_detail => {
+                                    detail = treat_detail.split('-')[1];
+                                    name = tmp.shift() + '-' + hospital_name;
+                                    originData[name] = detail;
+                                })
+                            })
+                        }
                         for(qindex in form._data){
                             data = form._data[qindex];
+                            console.log(data);
                             for(index in data.questions){
                                 question = data.questions[index];
-                                // console.log();
+                                console.log(index);
                                 if(typeof(question.value)!='object'){
-                                    if(originData[question.name] != undefined)
-                                        question.value = originData[question.name];
+                                    if(originData[question.name] != undefined){
+                                        item = originData[question.name];
+                                        if(item.indexOf('其他(')!=-1){
+                                            item = getStringInBracket(item);
+                                            question.value = '其他';
+                                            question.other_value = item;
+                                        }else{
+                                            question.value = originData[question.name];
+                                        }
+                                    }
                                 }else{
-                                    if(originData[question.name] != undefined)
-                                        question.value.push(originData[question.name]);
+                                    if(originData[question.name] != undefined){
+                                        originData[question.name].split(',').forEach(item => {
+                                            if(item.indexOf('其他(')!=-1){
+                                                item = getStringInBracket(item);
+                                                question.value.push('其他');
+                                                question.other_value = item;
+                                            }
+                                            question.value.push(item);
+                                        });
+                                    }
+
                                 }
                                 if(question.other_value)
                                     send_data[question.name] = question.value.toString() + '(' + question.other_value + ')';
@@ -1040,6 +1098,20 @@ var form = new Vue({
                                     send_data[question.name] = question.value.toString();
                             }
                         }
+                        // 可能是因為元素還沒產生出來 所以治療的狀況需要拉下來寫 無法在上面同步
+                        setTimeout(function(){
+                            treat = form._data.part7.questions;
+                            treat.forEach((question,index) => {
+                                if((question.type == 'text' || question.type == 'select') && index != 0){
+                                    item = originData[question.name].replace(/次/g, "");
+                                    item = originData[question.name].replace(/分鐘/g, "");
+                                    question.value = item;
+                                }
+                                // question.value = 1;
+                            });
+                        }, 0);
+                        
+
                     }
                 })
                 .catch(function (error) {
@@ -1158,7 +1230,7 @@ function formatData(){
     let history = send_data.history;
     if(history == '是')
         history += '，' + send_data.study_time_year + '，' + send_data.study_time_month;
-    if(history == '就學過，但中斷')
+    if(history == '就學過但中斷')
         history += '，' + send_data.stop_study_reason + '，' + send_data.study_time_year + '，' + send_data.study_time_month;
     send_data.history = history;
 
@@ -1195,7 +1267,7 @@ function formatData(){
             }
             heal_detail[hospital].push(tmp);
         }
-        if(key.indexOf('fun_heal_hz')>-1){
+        if(key.indexOf('language_heal_hz')>-1){
             hospital = key.split('-')[1];
             tmp = '語言治療每周-'+send_data[key]+'次';
             if(!heal_detail[hospital])
@@ -1215,7 +1287,7 @@ function formatData(){
             if(!heal_detail[hospital])
                 heal_detail[hospital] = [];
             heal_detail[hospital].push(tmp);
-        }if(key.indexOf('fun_heal_time')>-1){
+        }if(key.indexOf('language_heal_time')>-1){
             hospital = key.split('-')[1];
             tmp = '語言治療每次-'+send_data[key]+'分鐘';
             if(!heal_detail[hospital])
@@ -1251,7 +1323,21 @@ function formatData(){
     send_data.history_pregweek = send_data.preg_week + '，' + send_data.preg_day + '，' + send_data.birth_weight + '克';
 }
 
+// 取出小括號內的文字
+function getStringInBracket(str){
+    return str.substring(str.indexOf("(")+1,str.indexOf(")"));
+}
 
+function skipEmptyElementForArray(arr){  
+    var a = [];  
+    $.each(arr,function(i,v){  
+        var data = $.trim(v);//$.trim()函数来自jQuery  
+        if('' != data){  
+            a.push(data);  
+        }  
+    });  
+    return a;  
+}  
 
 // 自動填入資料
 // part8 裡有一個text 他的value為'' 會導致html 的question.value.include不能用 現在懶得修 如果未來還有需要自動填入 再想辦法修正

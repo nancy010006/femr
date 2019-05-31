@@ -183,6 +183,7 @@ function addNewQuestion($alldata){
     $caregiver = mysqli_real_escape_string($conn,@$alldata['caregiver']);
     $history = mysqli_real_escape_string($conn,@$alldata['history']);
     $day = mysqli_real_escape_string($conn,@$alldata['day']);
+    $who_found_question = mysqli_real_escape_string($conn,@$alldata['who_found_question']);
     $question_language = mysqli_real_escape_string($conn,@$alldata['question_language']);
     $question_action = mysqli_real_escape_string($conn,@$alldata['question_action']);
     $question_learn = mysqli_real_escape_string($conn,@$alldata['question_learn']);
@@ -224,6 +225,8 @@ function addNewQuestion($alldata){
     $history_abortion = mysqli_real_escape_string($conn,@$alldata['history_abortion']);
     $history_pregweek = mysqli_real_escape_string($conn,@$alldata['history_pregweek']);
     $history_pregprocess = mysqli_real_escape_string($conn,@$alldata['history_pregprocess']);
+    $neonatal_hp_check = mysqli_real_escape_string($conn,@$alldata['neonatal_hp_check']);
+    $neonatal_hear_check = mysqli_real_escape_string($conn,@$alldata['neonatal_hear_check']);
     $neonatal_screening = mysqli_real_escape_string($conn,@$alldata['neonatal_screening']);
     $abnormal_neonatal = mysqli_real_escape_string($conn,@$alldata['abnormal_neonatal']);
     $abnormal_disease = mysqli_real_escape_string($conn,@$alldata['abnormal_disease']);
@@ -281,9 +284,9 @@ function addNewQuestion($alldata){
             if($result->num_rows==0)
                 return 422;
             $sql = "insert into data 
-            (caseid,height, weight, bmi,head_circumference, caregiver,history,day,question_language,question_action,question_learn,question_relationship,question_mood,question_attention,question_perception,question_lifestyle,question_strangestyle,question_selfmutilation,question_helpkid,target,family_married,family_brother,family_fname,family_fage,family_feducation,family_fcareer,family_fcountry,family_mname,family_mage,family_meducation,family_mcareer,family_mcountry,family_family,treat_status,treat_type,treat_location,treat_hz,treat_time,heal_detail,history_family,history_nutrition,history_disease,history_medication,history_abuse,history_pregcount,history_birthcount,history_abortion,history_pregweek,history_pregprocess,neonatal_screening,abnormal_neonatal,abnormal_disease,abnormal_develop,writetime)
+            (caseid,height, weight, bmi,head_circumference, caregiver,history,day,who_found_question,question_language,question_action,question_learn,question_relationship,question_mood,question_attention,question_perception,question_lifestyle,question_strangestyle,question_selfmutilation,question_helpkid,target,family_married,family_brother,family_fname,family_fage,family_feducation,family_fcareer,family_fcountry,family_mname,family_mage,family_meducation,family_mcareer,family_mcountry,family_family,treat_status,treat_type,treat_location,treat_hz,treat_time,heal_detail,history_family,history_nutrition,history_disease,history_medication,history_abuse,history_pregcount,history_birthcount,history_abortion,history_pregweek,history_pregprocess,neonatal_hp_check,neonatal_hear_check,neonatal_screening,abnormal_neonatal,abnormal_disease,abnormal_develop,writetime)
              values 
-             ('$caseid','$height','$weight','$bmi','$head_circumference','$caregiver','$history','$day','$question_language','$question_action','$question_learn','$question_relationship','$question_mood','$question_attention','$question_perception','$question_lifestyle','$question_strangestyle','$question_selfmutilation','$question_helpkid','$target','$family_married','$family_brother','$family_fname','$family_fage','$family_feducation','$family_fcareer','$family_fcountry','$family_mname','$family_mage','$family_meducation','$family_mcareer','$family_mcountry','$family_family','$treat_status','$treat_type','$treat_location','$treat_hz','$treat_time','$heal_detail','$history_family','$history_nutrition','$history_disease','$history_medication','$history_abuse','$history_pregcount','$history_birthcount','$history_abortion','$history_pregweek','$history_pregprocess','$neonatal_screening','$abnormal_neonatal','$abnormal_disease','$abnormal_develop','$asiatime');";
+             ('$caseid','$height','$weight','$bmi','$head_circumference','$caregiver','$history','$day','$who_found_question','$question_language','$question_action','$question_learn','$question_relationship','$question_mood','$question_attention','$question_perception','$question_lifestyle','$question_strangestyle','$question_selfmutilation','$question_helpkid','$target','$family_married','$family_brother','$family_fname','$family_fage','$family_feducation','$family_fcareer','$family_fcountry','$family_mname','$family_mage','$family_meducation','$family_mcareer','$family_mcountry','$family_family','$treat_status','$treat_type','$treat_location','$treat_hz','$treat_time','$heal_detail','$history_family','$history_nutrition','$history_disease','$history_medication','$history_abuse','$history_pregcount','$history_birthcount','$history_abortion','$history_pregweek','$history_pregprocess','$neonatal_hp_check','$neonatal_hear_check','$neonatal_screening','$abnormal_neonatal','$abnormal_disease','$abnormal_develop','$asiatime');";
             //echo $sql;
             if(mysqli_query($conn, $sql))
                     return 200;

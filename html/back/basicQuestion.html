@@ -225,8 +225,10 @@
                             </template>
                         </div>
                     </div>
-                    <div v-if="question.value.includes('其他')">
-                        <input-other :title="question.title" v-model="question.other_value"></input-other>
+                    <div v-if="question.type!='text'">
+                        <div v-if="question.value.includes('其他')">
+                            <input-other :title="question.title" v-model="question.other_value"></input-other>
+                        </div>
                     </div>
                 </div>
             </div>
