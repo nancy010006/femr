@@ -172,6 +172,7 @@
             <hr class="mb-4">
             <div class="row">
                 <div v-for="question in part6.questions" :class="question.class">
+                    <input-number v-if="question.type=='number'" :title="question.title" v-model="question.value" :tip="question.tip"></input-number>
                     <input-text v-if="question.type=='text'" :title="question.title" v-model="question.value" :tip="question.tip"></input-text>
                     <input-select v-if="question.type=='select'" :title="question.title" v-model="question.value" :options="question.options"></input-select>
                     <div v-if="question.type=='radio'">
@@ -239,6 +240,7 @@
             <div class="row">
                 <div v-for="(question,index) in part8.questions" :class="question.class">
                     <input-text v-if="question.type=='text'" :title="question.title" v-model="question.value" :tip="question.tip"></input-text>
+                    <input-number v-if="question.type=='number'" :title="question.title" v-model="question.value" :tip="question.tip"></input-number>
                     <input-select v-if="question.type=='select'" :title="question.title" v-model="question.value" :options="question.options"></input-select>
                     <div v-if="question.type=='radio'">
                         <h4>{{question.title}}</h4>

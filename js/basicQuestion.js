@@ -105,7 +105,7 @@ var form = new Vue({
                     title: '就學多久-年',
                     type: 'disabled',
                     options: getSelectNum(0,7,'年'),
-                    value: '0年',
+                    value: '',
                     class:'col-md-6 mb-6',
                 },
                 {
@@ -113,7 +113,7 @@ var form = new Vue({
                     title: '就學多久-月',
                     type: 'disabled',
                     options: getSelectNum(0,11,'個月'),
-                    value: '0個月',
+                    value: '',
                     class:'col-md-6 mb-6',
                 },
             ],
@@ -281,7 +281,7 @@ var form = new Vue({
                 },
                 {
                     name:'family_fbirthday',
-                    type: 'text',
+                    type: 'number',
                     title: '父親-出生年月日',
                     value: '',
                     class:'col-md-6 mb-6',
@@ -352,7 +352,7 @@ var form = new Vue({
                 },
                 {
                     name:'family_mbirthday',
-                    type: 'text',
+                    type: 'number',
                     title: '母親-出生年月日',
                     value: '',
                     class:'col-md-6 mb-6',
@@ -775,7 +775,7 @@ var form = new Vue({
         },
         isForest: function() {
             // 此表為原本各項問題的類型 若選擇寄養媽媽再選回來要依照此表調整回原本的類型
-            const list = ['radio', 'select', 'select', 'select', 'select', 'radio', 'text', 'text', 'radio', 'select', 'radio', 'text', 'text', 'radio', 'select', 'radio'];
+            const list = ['radio', 'select', 'select', 'select', 'select', 'radio', 'text', 'number', 'radio', 'select', 'radio', 'text', 'number', 'radio', 'select', 'radio'];
             if(this.part2.questions[3].value == '寄養媽媽'){
                 for(i in this.part6.questions){
                     if(i == 5)
@@ -843,30 +843,32 @@ var form = new Vue({
         healPlace:function(){
             heal_places = this.part7.questions[7].value;
             this.part7.questions.splice(8,this.part7.questions.length);
-            for(i in heal_places){
-                const names = ['物理治療每周幾次','職能治療每周幾次','語言治療每周幾次'];
-                const input_names = ['phy_heal_hz','fun_heal_hz','language_heal_hz'];
-                const input_time_names = ['phy_heal_time','fun_heal_time','language_heal_time'];
-                for(index in names){
-                    let detail = 
-                    {
-                        name:input_names[index] + '-' + heal_places[i],
-                        title:heal_places[i]+names[index],
-                        type:'text',
-                        value:'',
-                        class:'col-md-6 mb-6'
+            if(heal_places!=""){
+                for(i in heal_places){
+                    const names = ['物理治療每周幾次','職能治療每周幾次','語言治療每周幾次'];
+                    const input_names = ['phy_heal_hz','fun_heal_hz','language_heal_hz'];
+                    const input_time_names = ['phy_heal_time','fun_heal_time','language_heal_time'];
+                    for(index in names){
+                        let detail = 
+                        {
+                            name:input_names[index] + '-' + heal_places[i],
+                            title:heal_places[i]+names[index],
+                            type:'text',
+                            value:'',
+                            class:'col-md-6 mb-6'
+                        }
+                        this.part7.questions.push(detail);
+                        let time = 
+                        {
+                            name:input_time_names[index] + '-' + heal_places[i],
+                            title:'共幾分鐘，以半小時為單位',
+                            options: [0,30,60,90,120,150,180,210,240,270,300],
+                            type:'select',
+                            value:'',
+                            class:'col-md-6 mb-6'
+                        }
+                        this.part7.questions.push(time);
                     }
-                    this.part7.questions.push(detail);
-                    let time = 
-                    {
-                        name:input_time_names[index] + '-' + heal_places[i],
-                        title:'共幾分鐘，以半小時為單位',
-                        options: [0,30,60,90,120,150,180,210,240,270,300],
-                        type:'select',
-                        value:'',
-                        class:'col-md-6 mb-6'
-                    }
-                    this.part7.questions.push(time);
                 }
             }
         }
@@ -949,6 +951,87 @@ var form = new Vue({
                 });
             }
         },
+        updateData:function(){
+            for(qindex in form._data){
+                data = form._data[qindex];
+                for(index in data.questions){
+                    question = data.questions[index];
+                    if(question.type != 'disabled'){
+                        // console.log(typeof(question.value));
+                        if(typeof(question.value)=='object'){
+                            // 多選至少要有一個選項
+                            if(question.value.length==0){
+                                this.remind = 1;
+                                that = this;
+                                setTimeout(function(){that.$refs.content[0].focus();}, 50);
+                                return;
+                            }
+                        }
+                        if(question.other_value)
+                            send_data[question.name] = question.value.toString() + '(' + question.other_value + ')';
+                        else
+                            send_data[question.name] = question.value.toString();
+                    }
+                }
+            }
+            if(validate()){
+                formatData();
+                var Request = new Object();    
+                Request = GetRequest();
+                var id = Request['id'];
+                send_data.id = id;
+                console.log(send_data);
+                $.confirm({
+                    title: 'warning!',
+                    content: '確定要修改問卷嗎?',
+                    theme:'modern',
+                    buttons: {
+                        sure: {
+                            text: '確定',
+                            btnClass: 'btn-blue',
+                            action: function(){
+                                axios.post('../../Question/controller.php', [{act:'updateQuestion'},send_data])
+                                .then(function (response) {
+                                    status = response.data[0].status;
+                                    if(status == 200){
+                                        var success = '<div class="result d-flex flex-column justify-content-center align-items-center"><h1>修改成功</h1></div>';
+                                        $('body').html(success);
+                                    }else if(status == 422){
+                                        $.confirm({
+                                            title: 'Encountered an error!',
+                                            icon: 'fa fa-warning',
+                                            content: '無此病歷號，請重新確認',
+                                            type: 'red',
+                                            typeAnimated: true,
+                                            buttons: {
+                                                close: function () {
+                                                }
+                                            }
+                                        });
+                                    }else{
+                                        $.confirm({
+                                            title: 'Encountered an error!',
+                                            icon: 'fa fa-warning',
+                                            content: '發生未知錯誤',
+                                            type: 'red',
+                                            typeAnimated: true,
+                                            buttons: {
+                                                close: function () {
+                                                }
+                                            }
+                                        });    
+                                    }
+                                })
+                                .catch(function (error) {
+                                });
+                            }
+                        },
+                        取消: function () {
+                        },
+                    }
+                });
+            }
+        },
         checkOption: function(event, $index, question) {
             option_value = event.target.value;
             option_status = event.target.checked;
@@ -962,8 +1045,8 @@ var form = new Vue({
         getOriginData:function(){
             var Request = new Object();    
             Request = GetRequest();
-            var caseid = Request['id'];
-            axios.post('../../Question/controller.php', [{"act":"getQuestionDetail"},{"id":caseid}])
+            var id = Request['id'];
+            axios.post('../../Question/controller.php', [{"act":"getQuestionDetail"},{"id":id}])
                 .then(function (response) {
                     status = response.data[0].status;
                     if(status == 200){
@@ -1031,7 +1114,6 @@ var form = new Vue({
                             ];
                             if(study_history[0] == '是')
                                 tmp.splice(1, 1);
-                            console.log(study_history);
                             study_history.forEach(item =>{
                                 let name = tmp.shift();
                                 originData[name] = item;
@@ -1040,7 +1122,6 @@ var form = new Vue({
                         // 療育詳細
                         if(originData.heal_detail && originData.heal_detail != '無資料'){
                             heal_detail = skipEmptyElementForArray(originData.heal_detail.split(';'));
-                            console.log(heal_detail);
                             heal_detail.forEach(hospital_detail => {
                                 tmp = 
                                 [
@@ -1062,12 +1143,26 @@ var form = new Vue({
                                 })
                             })
                         }
+                        // 療癒過但中斷資料
+                        if(originData.treat_time){
+                            treat_time = skipEmptyElementForArray(originData.treat_time.split(';'));
+                            tmp = 
+                            [
+                                'phy_heal_keep_time',
+                                'fun_heal_keep_time',
+                                'language_heal_keep_time',
+                            ];
+                            treat_time.forEach(treat_time_detail => {
+                                split = skipEmptyElementForArray(treat_time_detail.split(':'));
+                                data = split[1];
+                                name = tmp.shift();
+                                originData[name] = data;
+                            });
+                        }
                         for(qindex in form._data){
                             data = form._data[qindex];
-                            console.log(data);
                             for(index in data.questions){
                                 question = data.questions[index];
-                                console.log(index);
                                 if(typeof(question.value)!='object'){
                                     if(originData[question.name] != undefined){
                                         item = originData[question.name];
@@ -1156,56 +1251,57 @@ function validate(){
         var found = form.part6.questions.find(function(element) {
           return element.name == 'family_fbirthday';
         });
+        // 因為之前的設計 資料庫存的是年齡而不是生日 這裡直接弄成無法讓他修改年齡
         var birthday = found.value.toString();
-        if(birthday.length!=8){
-            alert("父親生日日期格式有誤");
-            return false;
+        if(birthday != ""){
+            if(birthday.length!=8){
+                alert("父親生日日期格式有誤");
+                return false;
+            }
+            var convertcontent = "";
+            convertcontent += birthday[0];
+            convertcontent += birthday[1];
+            convertcontent += birthday[2];
+            convertcontent += birthday[3];
+            convertcontent +="-";
+            convertcontent += birthday[4];
+            convertcontent += birthday[5];
+            convertcontent +="-";
+            convertcontent += birthday[6];
+            convertcontent += birthday[7];
+            var D=new Date(convertcontent);
+            if(D=="Invalid Date" && birthday !="77282297"){
+                alert("父親生日日期格式有誤");
+                return false;
+            }
         }
-        var convertcontent = "";
-        convertcontent += birthday[0];
-        convertcontent += birthday[1];
-        convertcontent += birthday[2];
-        convertcontent += birthday[3];
-        convertcontent +="-";
-        convertcontent += birthday[4];
-        convertcontent += birthday[5];
-        convertcontent +="-";
-        convertcontent += birthday[6];
-        convertcontent += birthday[7];
-        var D=new Date(convertcontent);
-        if(D=="Invalid Date" && birthday !="77282297"){
-            alert("父親生日日期格式有誤");
-            return false;
-        }
-        if(birthday=="77282297")
-            console.log('不提供');
         // 檢查母親生日格式
         var found = form.part6.questions.find(function(element) {
           return element.name == 'family_mbirthday';
         });
         var birthday = found.value.toString();
-        if(birthday.length!=8){
-            alert("母親生日日期格式有誤");
-            return false;
-        }
-        var convertcontent = "";
-        convertcontent += birthday[0];
-        convertcontent += birthday[1];
-        convertcontent += birthday[2];
-        convertcontent += birthday[3];
-        convertcontent +="-";
-        convertcontent += birthday[4];
-        convertcontent += birthday[5];
-        convertcontent +="-";
-        convertcontent += birthday[6];
-        convertcontent += birthday[7];
-        var D=new Date(convertcontent);
-        if(D=="Invalid Date" && birthday !="77282297"){
-            alert("母親生日日期格式有誤");
-            return false;
-        }
-        if(birthday=="77282297")
-            console.log('不提供');
+        if(birthday != ""){
+            if(birthday.length!=8){
+                alert("母親生日日期格式有誤");
+                return false;
+            }
+            var convertcontent = "";
+            convertcontent += birthday[0];
+            convertcontent += birthday[1];
+            convertcontent += birthday[2];
+            convertcontent += birthday[3];
+            convertcontent +="-";
+            convertcontent += birthday[4];
+            convertcontent += birthday[5];
+            convertcontent +="-";
+            convertcontent += birthday[6];
+            convertcontent += birthday[7];
+            var D=new Date(convertcontent);
+            if(D=="Invalid Date" && birthday !="77282297"){
+                alert("母親生日日期格式有誤");
+                return false;
+            }
+        }   
     }
     return true;
         // $("#family_mage_input").val("不提供");

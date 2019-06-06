@@ -150,7 +150,7 @@ function filter(){
                 "searchable": false
             },
             {
-                "aTargets" :　[39],  
+                "aTargets" :　[40],  
                 "mRender" : function(data, type, full,a){  
                     data = full[a.col-1];
                     result = "";
@@ -165,7 +165,7 @@ function filter(){
                 }  
             },
             {
-                "aTargets" :　[40],  
+                "aTargets" :　[41],  
                 "mRender" : function(data, type, full,a){  
                     data = full[a.col-1];
                     result = "";
