@@ -1247,6 +1247,7 @@ function validate(){
     });
     isForest = found.value;
     if(isForest!='寄養媽媽'){
+        var D1=new Date;
         // 檢查父親生日格式
         var found = form.part6.questions.find(function(element) {
           return element.name == 'family_fbirthday';
@@ -1274,6 +1275,13 @@ function validate(){
                 alert("父親生日日期格式有誤");
                 return false;
             }
+            var Compare=Date.parse(D1.toString())-Date.parse(D.toString()); //相差毫秒數
+            var month=Compare/(1000*60*60*24*30); //相差月數
+            var year = parseInt(month/12);
+            send_data.family_fage = year;
+            if(birthday=="77282297")
+                send_data.family_fage = '不提供';
+            // console.log($("#family_fage_input").val());
         }
         // 檢查母親生日格式
         var found = form.part6.questions.find(function(element) {
@@ -1301,6 +1309,12 @@ function validate(){
                 alert("母親生日日期格式有誤");
                 return false;
             }
+            var Compare=Date.parse(D1.toString())-Date.parse(D.toString()); //相差毫秒數
+            var month=Compare/(1000*60*60*24*30); //相差月數
+            var year = parseInt(month/12);
+            send_data.family_mage = year;
+            if(birthday=="77282297")
+                send_data.family_mage = '不提供';
         }   
     }
     return true;
@@ -1437,25 +1451,25 @@ function skipEmptyElementForArray(arr){
 
 // 自動填入資料
 // part8 裡有一個text 他的value為'' 會導致html 的question.value.include不能用 現在懶得修 如果未來還有需要自動填入 再想辦法修正
-// for(qindex in form._data){
-//     data = form._data[qindex];
-//     for(index in data.questions){
-//         question = data.questions[index];
-//         switch(question.type)
-//         {
-//             case 'text':
-//                 question.value = 77282297;
-//                 break;
-//             case 'select':
-//                 question.value = question.options[0];
-//                 break;
-//             case 'radio':
-//                 question.value = question.options[0];
-//                 break;
-//             case 'checkbox':
-//                 question.value.push(question.options[0]);
-//                 break;
-//         }
-//     }
-// }
-// form.part1.questions[0].value = 'z123';
+for(qindex in form._data){
+    data = form._data[qindex];
+    for(index in data.questions){
+        question = data.questions[index];
+        switch(question.type)
+        {
+            case 'text':
+                question.value = 77282297;
+                break;
+            case 'select':
+                question.value = question.options[0];
+                break;
+            case 'radio':
+                question.value = question.options[0];
+                break;
+            case 'checkbox':
+                question.value.push(question.options[0]);
+                break;
+        }
+    }
+}
+form.part1.questions[0].value = 'z123';
