@@ -1451,25 +1451,25 @@ function skipEmptyElementForArray(arr){
 
 // 自動填入資料
 // part8 裡有一個text 他的value為'' 會導致html 的question.value.include不能用 現在懶得修 如果未來還有需要自動填入 再想辦法修正
-for(qindex in form._data){
-    data = form._data[qindex];
-    for(index in data.questions){
-        question = data.questions[index];
-        switch(question.type)
-        {
-            case 'text':
-                question.value = 77282297;
-                break;
-            case 'select':
-                question.value = question.options[0];
-                break;
-            case 'radio':
-                question.value = question.options[0];
-                break;
-            case 'checkbox':
-                question.value.push(question.options[0]);
-                break;
-        }
-    }
-}
-form.part1.questions[0].value = 'z123';
+// for(qindex in form._data){
+//     data = form._data[qindex];
+//     for(index in data.questions){
+//         question = data.questions[index];
+//         switch(question.type)
+//         {
+//             case 'text':
+//                 question.value = 77282297;
+//                 break;
+//             case 'select':
+//                 question.value = question.options[0];
+//                 break;
+//             case 'radio':
+//                 question.value = question.options[0];
+//                 break;
+//             case 'checkbox':
+//                 question.value.push(question.options[0]);
+//                 break;
+//         }
+//     }
+// }
+// form.part1.questions[0].value = 'z123';
