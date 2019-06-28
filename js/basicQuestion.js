@@ -267,7 +267,7 @@ var form = new Vue({
                     name:'family_family',
                     type: 'radio',
                     title: '5.目前居住家庭型態',
-                    options: ['小家庭', '單親家庭', '寄養家庭', '大家庭', ],
+                    options: ['小家庭', '單親家庭', '寄養家庭', '大家庭', '其他',],
                     value: '',
                     other_value: '',
                     class:'col-md-12 mb-12',
@@ -420,6 +420,15 @@ var form = new Vue({
             head:'七、療育情形',
             questions:[
                 {
+                    name:'treat_status',
+                    type: 'radio',
+                    title: '療育現況',
+                    options: ['未曾療育過', '療育過但中斷', '療育持續中', ],
+                    value: '',
+                    other_value: '',
+                    class:'col-md-12 mb-12',
+                },
+                {
                     name:'treat_years',
                     title: '開始療育年齡-歲數',
                     type: 'select',
@@ -434,15 +443,6 @@ var form = new Vue({
                     options: getSelectNum(0,11,'個月'),
                     value: '',
                     class:'col-md-6 mb-6',
-                },
-                {
-                    name:'treat_status',
-                    type: 'radio',
-                    title: '療育現況',
-                    options: ['未曾療育過', '療育過但中斷', '療育持續中', ],
-                    value: '',
-                    other_value: '',
-                    class:'col-md-12 mb-12',
                 },
                 {
                     name:'phy_heal_keep_time',
@@ -807,10 +807,10 @@ var form = new Vue({
             return;
         },
         ageUnder1: function() {
-            if(this.part7.questions[0].value == '0歲'){
-                this.part7.questions[1].type = 'select';
+            if(this.part7.questions[1].value == '0歲'){
+                this.part7.questions[2].type = 'select';
             }else{
-                this.part7.questions[1].type = 'disabled';
+                this.part7.questions[2].type = 'disabled';
             }
             return;
         },
@@ -832,6 +832,7 @@ var form = new Vue({
                 this.part7.questions[7].type = 'checkbox';
               break;
             default:
+                console.log(this.part7.questions);
                 this.part7.questions.forEach((question,index) => {
                     if(index >= 3)
                         question.type = 'disabled';
@@ -1451,25 +1452,25 @@ function skipEmptyElementForArray(arr){
 
 // 自動填入資料
 // part8 裡有一個text 他的value為'' 會導致html 的question.value.include不能用 現在懶得修 如果未來還有需要自動填入 再想辦法修正
-// for(qindex in form._data){
-//     data = form._data[qindex];
-//     for(index in data.questions){
-//         question = data.questions[index];
-//         switch(question.type)
-//         {
-//             case 'text':
-//                 question.value = 77282297;
-//                 break;
-//             case 'select':
-//                 question.value = question.options[0];
-//                 break;
-//             case 'radio':
-//                 question.value = question.options[0];
-//                 break;
-//             case 'checkbox':
-//                 question.value.push(question.options[0]);
-//                 break;
-//         }
-//     }
-// }
-// form.part1.questions[0].value = 'z123';
+for(qindex in form._data){
+    data = form._data[qindex];
+    for(index in data.questions){
+        question = data.questions[index];
+        switch(question.type)
+        {
+            case 'text':
+                question.value = 77282297;
+                break;
+            case 'select':
+                question.value = question.options[0];
+                break;
+            case 'radio':
+                question.value = question.options[0];
+                break;
+            case 'checkbox':
+                question.value.push(question.options[0]);
+                break;
+        }
+    }
+}
+form.part1.questions[0].value = 'z123';
