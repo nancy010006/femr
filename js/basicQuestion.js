@@ -815,7 +815,7 @@ var form = new Vue({
             return;
         },
         healStatus:function(){
-            switch(this.part7.questions[2].value)
+            switch(this.part7.questions[0].value)
             {
             case '療育過但中斷':
                 this.part7.questions[3].type = 'select';
